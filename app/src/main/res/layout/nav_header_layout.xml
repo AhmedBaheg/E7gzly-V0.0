@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="300dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/Drawer_Img"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        app:civ_border_color="#FFF"
+        app:civ_border_width="2dp"
+        android:src="@drawable/image1"
+        app:layout_constraintBottom_toTopOf="@id/tx_drawer_Email"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tx_drawer_Name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/colorWhite"
+        android:text="Name"
+        app:layout_constraintEnd_toEndOf="@+id/Drawer_Img"
+        app:layout_constraintStart_toStartOf="@+id/Drawer_Img"
+        app:layout_constraintTop_toBottomOf="@+id/Drawer_Img"
+        app:layout_constraintBottom_toTopOf="@+id/tx_drawer_Email"/>
+
+    <TextView
+        android:id="@+id/tx_drawer_Email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorWhite"
+        android:layout_marginTop="8dp"
+        android:text="Example@mail.com"
+        app:layout_constraintEnd_toEndOf="@+id/Drawer_Img"
+        app:layout_constraintStart_toStartOf="@+id/Drawer_Img"
+        app:layout_constraintTop_toBottomOf="@+id/tx_drawer_Name"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

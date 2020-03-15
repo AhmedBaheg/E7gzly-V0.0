@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">E7gzly</string>
+
+    <string name="openNavDrawer">Navigation Drawer Open</string>
+    <string name="closeNavDrawer">Navigation Drawer Close</string>
+
+    <string name="trip">Trip</string>
+    <string name="from">From</string>
+</resources>
