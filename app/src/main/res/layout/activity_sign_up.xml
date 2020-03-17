@@ -8,11 +8,12 @@
         <ImageView
             android:id="@+id/Img_logo"
             android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_gravity="end"
+            android:layout_height="50dp"
             android:src="@drawable/logochoose"
+            android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/tv_text"/>
 
 
         <TextView
@@ -26,7 +27,8 @@
             android:textSize="30sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Img_logo" />
+            app:layout_constraintTop_toBottomOf="@+id/Img_logo"
+            app:layout_constraintBottom_toTopOf="@id/ed_First_Name"/>
 
 
         <EditText
@@ -40,6 +42,7 @@
             android:inputType="text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/ed_Last_Name"
             app:layout_constraintTop_toBottomOf="@+id/tv_text" />
 
         <EditText
@@ -54,6 +57,7 @@
             android:inputType="text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/ed_Email"
             app:layout_constraintTop_toBottomOf="@+id/ed_First_Name" />
 
         <EditText
@@ -66,6 +70,7 @@
             android:drawableEnd="@drawable/ic_email"
             android:hint="Email Address"
             android:inputType="textEmailAddress"
+            app:layout_constraintBottom_toTopOf="@id/ed_Password"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ed_Last_Name" />
@@ -84,6 +89,7 @@
             android:inputType="textPassword"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/ed_confirm_Password"
             app:layout_constraintTop_toBottomOf="@+id/ed_Email" />
 
         <EditText
@@ -97,6 +103,7 @@
             android:drawableEnd="@drawable/ic_password"
             android:hint="Confirm Password"
             android:inputType="textPassword"
+            app:layout_constraintBottom_toTopOf="@id/btn_sign_up_now"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ed_Password" />
@@ -109,10 +116,12 @@
             android:layout_marginStart="25dp"
             android:layout_marginTop="35dp"
             android:layout_marginEnd="25dp"
+            android:layout_marginBottom="8dp"
             android:background="@drawable/btn_sign_up_now"
             android:text="Sign Up"
             android:textColor="#fff"
             android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ed_confirm_Password" />

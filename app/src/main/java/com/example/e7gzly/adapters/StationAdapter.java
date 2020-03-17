@@ -17,9 +17,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StationAdapter extends ArrayAdapter<StationsModel> {
+    int pos = -1;
+
     public StationAdapter(@NonNull Context context, @NonNull ArrayList<StationsModel> stations) {
-        super(context,0, stations);
+        super(context, 0, stations);
     }
+
+    public StationAdapter(@NonNull Context context, @NonNull ArrayList<StationsModel> stations, int pos) {
+        super(context, 0, stations);
+        this.pos = pos;
+    }
+
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -28,25 +36,33 @@ public class StationAdapter extends ArrayAdapter<StationsModel> {
 
     @Override
     public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+
         return initView(position, convertView, parent);
     }
 
     private View initView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(
-                    R.layout.statiom_spinner_raw, parent, false
-            );
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.statiom_spinner_raw, parent, false);
         }
-
         TextView id = convertView.findViewById(R.id.tv_station_id);
         TextView textViewName = convertView.findViewById(R.id.tv_station_name);
-
         StationsModel stations = getItem(position);
-        if (stations != null) {
-            id.setText(stations.getSt_id());
-            textViewName.setText(stations.getSt_name());
-        }
 
+        if (pos != -1) {
+            if (position == pos) {
+                convertView.setVisibility(View.GONE);
+            } else {
+                if (stations != null) {
+                    id.setText(stations.getSt_id());
+                    textViewName.setText(stations.getSt_name());
+                }
+            }
+        } else {
+            if (stations != null) {
+                id.setText(stations.getSt_id());
+                textViewName.setText(stations.getSt_name());
+            }
+        }
         return convertView;
     }
 }

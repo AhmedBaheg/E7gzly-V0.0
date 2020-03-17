@@ -29,7 +29,7 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SearchFragment extends Fragment {
+public class SearchFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
     private View v;
 
@@ -41,6 +41,7 @@ public class SearchFragment extends Fragment {
     private StationAdapter from_adapter, to_adapter;
     private Spinner from_spinner, to_spinner, date_spinner, time_spinner;
     private Button search_btn;
+    private ArrayList<StationsModel> stations_list = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -51,8 +52,7 @@ public class SearchFragment extends Fragment {
         databaseReference.keepSynced(true);
         from_spinner = v.findViewById(R.id.sp_from);
         to_spinner = v.findViewById(R.id.sp_to);
-        date_spinner = v.findViewById(R.id.sp_date);
-        time_spinner = v.findViewById(R.id.sp_time);
+        date_spinner = v.findViewById(R.id.sp_train_class);
         search_btn = v.findViewById(R.id.btn_search);
         to_spinner.setEnabled(false);
         return v;
@@ -87,38 +87,44 @@ public class SearchFragment extends Fragment {
 
     }
 
-    private void spinnerSelected(ArrayList<StationsModel> stations_list) {
+    private void spinnerSelected(final ArrayList<StationsModel> stations_list) {
+        this.stations_list=stations_list;
         from_adapter = new StationAdapter(getContext(), stations_list);
-        to_adapter = new StationAdapter(getContext(), stations_list);
+
         from_spinner.setAdapter(from_adapter);
-        to_spinner.setAdapter(to_adapter);
-        from_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                StationsModel stations_click = (StationsModel) from_spinner.getSelectedItem();
-                selected_from = stations_click.getSt_name();
-                selected_from_id = stations_click.getSt_id();
+
+        from_spinner.setOnItemSelectedListener(this);
+        to_spinner.setOnItemSelectedListener(this);
+
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        switch (parent.getId()) {
+            case R.id.sp_from :
+                StationsModel from_click = (StationsModel) from_spinner.getSelectedItem();
+                selected_from = from_click.getSt_name();
+                selected_from_id = from_click.getSt_id();
                 if (position !=0){
+                    to_adapter = new StationAdapter(getContext(), stations_list,position);
+                    to_spinner.setAdapter(to_adapter);
                     to_spinner.setEnabled(true);
+                }else {
+                    to_spinner.setAdapter(null);
+                    to_spinner.setEnabled(false);
                 }
-            }
+                break;
+            case R.id.sp_to :
+                StationsModel to_click = (StationsModel) to_spinner.getSelectedItem();
+                selected_to = to_click.getSt_name();
+                selected_to_id = to_click.getSt_id();
+                break;
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+        }
+    }
 
-            }
-        });
-        to_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
 
     }
 }
