@@ -5,6 +5,8 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/transparent</item>
         <item name="windowActionBarOverlay">true</item>
+        <!-- Customize background to status bar -->
+        <item name="colorPrimaryDark">@color/colorStatusBar</item>
         <!--Customize Drawer Bar Theme-->
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
     </style>
@@ -32,6 +34,24 @@
 
     </style>
 
+    <style name="TextInputLayout_forgot_sign_up" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+        <item name="boxStrokeColor">#ffffff</item>
+        <item name="boxStrokeWidth">3dp</item>
+        <item name="boxCornerRadiusBottomEnd">15dp</item>
+        <item name="boxCornerRadiusTopStart">15dp</item>
+        <item name="boxCornerRadiusTopEnd">15dp</item>
+        <item name="boxCornerRadiusBottomStart">15dp</item>
+        <item name="errorTextAppearance">@style/ErrorText</item>
+        <item name="hintTextAppearance">@style/HintText</item>
+        <item name="android:textColor">@color/colorSkyBlue</item>
+        <item name="android:textColorHint">@color/colorSkyBlue</item>
+        <item name="colorControlNormal">@color/colorSkyBlue</item>
+        <item name="colorControlActivated">@color/colorSkyBlueDark</item>
+        <item name="colorControlHighlight">@color/colorSkyBlue</item>
+
+    </style>
+
     <style name="ErrorText" parent="TextAppearance.Design.Error">
         <item name="android:textColor">@color/colorRed</item>
         <item name="android:textSize">16sp</item>
@@ -39,16 +59,12 @@
 
     <style name="HintText" parent="TextAppearance.Design.Hint">
         <item name="android:textColor">@color/colorWhite</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
-
-
-    <!--    <style name="CustomActionBar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">-->
-<!--        <item name="android:windowActionBarOverlay">true</item>-->
-<!--        &lt;!&ndash; Support library compatibility &ndash;&gt;-->
-<!--        <item name="windowActionBarOverlay">true</item>-->
-<!--    </style>-->
-
+    <style name="HintTextEmailForgot_Sign_Up" parent="TextAppearance.Design.Hint">
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textSize">16sp</item>
+    </style>
 
 </resources>

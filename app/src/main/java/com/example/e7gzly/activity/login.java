@@ -1,14 +1,14 @@
 package com.example.e7gzly.activity;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.e7gzly.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -24,9 +24,10 @@ public class login extends AppCompatActivity {
 
     Button btn_Login_Now;
     TextInputLayout ed_Email_Login, ed_Password_Login;
+    TextView tv_Forgot_Password;
+
     // FireBase
-//    FirebaseDatabase firebaseDatabase;
-//    DatabaseReference databaseReference;
+
     FirebaseAuth firebaseAuth;
 
     @Override
@@ -47,34 +48,25 @@ public class login extends AppCompatActivity {
             }
         });
 
+        tv_Forgot_Password = findViewById(R.id.tv_forgot_password);
+        tv_Forgot_Password.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(login.this, Forgot_Password.class));
+            }
+        });
+
     }
 
     private void UserLogin() {
         String email = ed_Email_Login.getEditText().getText().toString();
         String password = ed_Password_Login.getEditText().getText().toString();
 
-        if (TextUtils.isEmpty(email)) {
-
-            // Email Is Empty
-            ed_Email_Login.setError("Please Enter Your Email");
+        if (!validationEmail()) {
             ed_Email_Login.requestFocus();
 
-        } else if (!isEmailValid(email)) {
-
-            ed_Email_Login.setError("Please Enter Correct Email example@example.com");
-            ed_Email_Login.requestFocus();
-
-        } else if (TextUtils.isEmpty(password)) {
-
-            // Password Is Empty
-            ed_Password_Login.setError("Please Enter Your Password");
+        } else if (!validationPassword()) {
             ed_Password_Login.requestFocus();
-
-        } else if (password.length() < 6) {
-
-            ed_Password_Login.setError("The Password Should Be More Than 6 Digits");
-            ed_Password_Login.requestFocus();
-
         } else {
 
             firebaseAuth.signInWithEmailAndPassword(email, password)
@@ -83,14 +75,14 @@ public class login extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 // Sign in success, update UI with the signed-in user's information
-
-                                startActivity(new Intent(login.this, Home.class));
-
+                                if (firebaseAuth.getCurrentUser().isEmailVerified()) {
+                                    startActivity(new Intent(login.this, Home.class));
+                                } else {
+                                    Toast.makeText(login.this, "Please Check Your Email And Verify Your Account", Toast.LENGTH_LONG).show();
+                                }
                             } else {
                                 // If sign in fails, display a message to the user.
-
                                 Toast.makeText(login.this, "Email Or Password Incorrect", Toast.LENGTH_SHORT).show();
-
                             }
 
                             // ...
@@ -100,6 +92,34 @@ public class login extends AppCompatActivity {
         }
 
 
+    }
+
+    private boolean validationEmail() {
+        String input_Email = ed_Email_Login.getEditText().getText().toString();
+        if (input_Email.isEmpty()) {
+            ed_Email_Login.setError("Enter Your Email");
+            return false;
+        } else if (!isEmailValid(input_Email)) {
+            ed_Email_Login.setError("Enter Correct Email example@example.com");
+            return false;
+        } else {
+            ed_Email_Login.setError(null);
+            return true;
+        }
+    }
+
+    private boolean validationPassword() {
+        String input_Password = ed_Password_Login.getEditText().getText().toString();
+        if (input_Password.isEmpty()) {
+            ed_Password_Login.setError("Please Enter Your Password");
+            return false;
+        } else if (input_Password.length() < 6) {
+            ed_Password_Login.setError("The Password Should Be More Than 6 Digits");
+            return false;
+        } else {
+            ed_Password_Login.setError(null);
+            return true;
+        }
     }
 
     public boolean isEmailValid(String email) {

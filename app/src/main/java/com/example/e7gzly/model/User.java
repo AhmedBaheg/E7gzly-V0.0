@@ -2,14 +2,23 @@ package com.example.e7gzly.model;
 
 public class User {
 
-    String fullName, email;
+    String fullName, email , imgUrl;
 
-    public User(String fullName, String email) {
+    public User(String fullName, String email , String imgUrl) {
         this.fullName = fullName;
         this.email = email;
+        this.imgUrl = imgUrl;
     }
 
     public User() {
+    }
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
     }
 
     public String getFullName() {

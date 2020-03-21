@@ -20,6 +20,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.e7gzly.R;
 import com.example.e7gzly.fragment.MyTicketFragment;
 import com.example.e7gzly.fragment.SearchFragment;
+import com.example.e7gzly.fragment.SettingsFragment;
 import com.example.e7gzly.model.User;
 import com.example.e7gzly.utilities.Constants;
 import com.google.android.material.navigation.NavigationView;
@@ -30,6 +31,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -37,7 +41,10 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     // FireBase
 
     private DatabaseReference databaseReference;
+    FirebaseAuth firebaseAuth;
+    FirebaseUser firebaseUser;
     private TextView title;
+    String userId;
 
     // Drawer
     private ActionBarDrawerToggle actionBarDrawerToggle;
@@ -48,6 +55,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
     private TextView nav_Drawer_Email, nav_Drawer_Name;
+    private CircleImageView img_Drawer;
 
 
     @Override
@@ -56,7 +64,11 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         setContentView(R.layout.activity_home);
 
         databaseReference = FirebaseDatabase.getInstance().getReference();
-
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
+        if (firebaseUser != null) {
+            userId = firebaseUser.getUid();
+        }
         // Drawer
 
         toolbar = findViewById(R.id.main_toolbar);
@@ -70,14 +82,17 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         viewHeader = navigationView.getHeaderView(0);
         nav_Drawer_Name = viewHeader.findViewById(R.id.tx_drawer_Name);
         nav_Drawer_Email = viewHeader.findViewById(R.id.tx_drawer_Email);
+        img_Drawer = viewHeader.findViewById(R.id.Drawer_Img);
 
 
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
                 R.string.openNavDrawer, R.string.closeNavDrawer);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
+        navigationView.setItemIconTintList(null); // this code to change color icon image in navigation drawer to original color  //
 
         returnData();
+
         navigationView.setNavigationItemSelectedListener(this);
 
 
@@ -110,6 +125,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
                 nav_Drawer_Email.setText(user.getEmail());
                 nav_Drawer_Name.setText(user.getFullName());
+                String img = dataSnapshot.child("imgUrl").getValue().toString();
+                Picasso.get().load(img).into(img_Drawer);
             }
 
             @Override
@@ -133,6 +150,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 title.setText("My Tickets");
                 break;
             case R.id.settings:
+                loadFragment(new SettingsFragment());
                 title.setText("Settings");
                 break;
             case R.id.logout:
@@ -147,8 +165,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);
-
-
         return true;
     }
 

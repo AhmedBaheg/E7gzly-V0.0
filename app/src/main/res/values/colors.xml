@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00CCFF</color>
-    <color name="colorAccent">#000</color>
+    <color name="colorPrimaryDark">#23FFE8</color>
+    <color name="colorAccent">#A5EFE7</color>
+    <color name="colorStatusBar">#00CCFF</color>
+    <color name="colorSkyBlue">#0EC3EF</color>
+    <color name="colorSkyBlueDark">#0099FE</color>
+    <color name="colorBlack">#000</color>
     <color name="colorWhite">#ffffff</color>
     <color name="colorRed">#ffff0000</color>
     <color name="transparent">#00000000</color>

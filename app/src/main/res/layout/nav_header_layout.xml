@@ -6,15 +6,15 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/Drawer_Img"
-        android:layout_width="96dp"
-        android:layout_height="96dp"
-        app:civ_border_color="#FFF"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:civ_border_color="@color/colorWhite"
         app:civ_border_width="2dp"
-        android:src="@drawable/image1"
-        app:layout_constraintBottom_toTopOf="@id/tx_drawer_Email"
+        android:src="@drawable/default_pic_user"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <TextView
         android:id="@+id/tx_drawer_Name"
@@ -25,8 +25,7 @@
         android:text="Name"
         app:layout_constraintEnd_toEndOf="@+id/Drawer_Img"
         app:layout_constraintStart_toStartOf="@+id/Drawer_Img"
-        app:layout_constraintTop_toBottomOf="@+id/Drawer_Img"
-        app:layout_constraintBottom_toTopOf="@+id/tx_drawer_Email"/>
+        app:layout_constraintTop_toBottomOf="@+id/Drawer_Img"/>
 
     <TextView
         android:id="@+id/tx_drawer_Email"
@@ -37,8 +36,7 @@
         android:text="Example@mail.com"
         app:layout_constraintEnd_toEndOf="@+id/Drawer_Img"
         app:layout_constraintStart_toStartOf="@+id/Drawer_Img"
-        app:layout_constraintTop_toBottomOf="@+id/tx_drawer_Name"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@+id/tx_drawer_Name"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
