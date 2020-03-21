@@ -117,6 +117,7 @@
                 android:id="@+id/sp_train_class"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:entries="@array/train_class"
                 android:layout_gravity="center" />
 
         </LinearLayout>

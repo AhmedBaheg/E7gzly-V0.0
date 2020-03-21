@@ -109,7 +109,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         fragmentTransaction.replace(R.id.container, Fragment);
         fragmentTransaction.addToBackStack(null);
 
-        getFragmentManager().popBackStack();
+        fragmentManager.popBackStack();
         // Commit the transaction
         fragmentTransaction.commit();
 

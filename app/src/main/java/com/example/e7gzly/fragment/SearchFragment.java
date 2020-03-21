@@ -1,12 +1,15 @@
 package com.example.e7gzly.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
@@ -29,17 +32,18 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SearchFragment extends Fragment implements AdapterView.OnItemSelectedListener {
+public class SearchFragment extends Fragment implements AdapterView.OnItemSelectedListener, View.OnClickListener {
 
     private View v;
 
-    private String selected_from, selected_to;
-    private String selected_from_id;
-    private String selected_to_id;
+    private String selected_from, selected_to, selected_class;
+    private String selected_from_id, selected_to_id;
+    private boolean is_checked;
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
     private StationAdapter from_adapter, to_adapter;
-    private Spinner from_spinner, to_spinner, date_spinner, time_spinner;
+    private Spinner from_spinner, to_spinner, class_spinner;
+    private CheckBox checkBox_class;
     private Button search_btn;
     private ArrayList<StationsModel> stations_list = new ArrayList<>();
 
@@ -52,9 +56,11 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
         databaseReference.keepSynced(true);
         from_spinner = v.findViewById(R.id.sp_from);
         to_spinner = v.findViewById(R.id.sp_to);
-        date_spinner = v.findViewById(R.id.sp_train_class);
+        class_spinner = v.findViewById(R.id.sp_train_class);
         search_btn = v.findViewById(R.id.btn_search);
+        checkBox_class = v.findViewById(R.id.cb_class);
         to_spinner.setEnabled(false);
+        class_spinner.setEnabled(false);
         return v;
     }
 
@@ -63,6 +69,16 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
         super.onActivityCreated(savedInstanceState);
         databaseReference.keepSynced(true);
         stationsList();
+        checkBox_class.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    class_spinner.setEnabled(true);
+                    class_spinner.setOnItemSelectedListener(SearchFragment.this);
+                }
+            }
+        });
+        search_btn.setOnClickListener(this);
 
     }
 
@@ -88,11 +104,9 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
     }
 
     private void spinnerSelected(final ArrayList<StationsModel> stations_list) {
-        this.stations_list=stations_list;
+        this.stations_list = stations_list;
         from_adapter = new StationAdapter(getContext(), stations_list);
-
         from_spinner.setAdapter(from_adapter);
-
         from_spinner.setOnItemSelectedListener(this);
         to_spinner.setOnItemSelectedListener(this);
 
@@ -101,30 +115,42 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         switch (parent.getId()) {
-            case R.id.sp_from :
+            case R.id.sp_from:
+
                 StationsModel from_click = (StationsModel) from_spinner.getSelectedItem();
                 selected_from = from_click.getSt_name();
                 selected_from_id = from_click.getSt_id();
-                if (position !=0){
-                    to_adapter = new StationAdapter(getContext(), stations_list,position);
+                if (position != 0) {
+
+                    to_adapter = new StationAdapter(getContext(), stations_list, position);
                     to_spinner.setAdapter(to_adapter);
                     to_spinner.setEnabled(true);
-                }else {
+
+                } else {
                     to_spinner.setAdapter(null);
                     to_spinner.setEnabled(false);
                 }
                 break;
-            case R.id.sp_to :
+            case R.id.sp_to:
+
                 StationsModel to_click = (StationsModel) to_spinner.getSelectedItem();
                 selected_to = to_click.getSt_name();
                 selected_to_id = to_click.getSt_id();
                 break;
 
+            case R.id.sp_train_class:
+                selected_class = class_spinner.getSelectedItem().toString();
+                break;
         }
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    @Override
+    public void onClick(View v) {
 
     }
 }
