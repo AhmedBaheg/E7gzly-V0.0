@@ -10,6 +10,11 @@ public class User {
         this.imgUrl = imgUrl;
     }
 
+    public User(String fullName, String email) {
+        this.fullName = fullName;
+        this.email = email;
+    }
+
     public User() {
     }
 

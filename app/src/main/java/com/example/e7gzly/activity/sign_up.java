@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.e7gzly.R;
 import com.example.e7gzly.model.User;
+import com.example.e7gzly.utilities.Constants;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
@@ -75,8 +76,6 @@ public class sign_up extends AppCompatActivity {
         final String fullName = firstName + " " + lastName;
         final String email = ed_Email.getEditText().getText().toString().trim();
         final String password = ed_Password.getEditText().getText().toString().trim();
-        String confirmPassword = ed_Confirm_Password.getEditText().getText().toString().trim();
-        final String imgUrl = "https://firebasestorage.googleapis.com/v0/b/e7gzly-46b47.appspot.com/o/Profile%20Images%2Fdefault_user_image.png?alt=media&token=b3b1fb10-a65f-482b-98f1-09f9ac7ddb0c";
 
         if (!validationFirstName()) {
             ed_First_Name.requestFocus();
@@ -96,16 +95,14 @@ public class sign_up extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
 
                             if (task.isSuccessful()) {
-
-
                                 firebaseAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
 
                                         if (task.isSuccessful()) {
-                                            User user = new User(fullName, email, imgUrl);
+                                            User user = new User(fullName, email);
                                             FirebaseDatabase.getInstance().getReference("User")
-                                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                                    .child(Constants.getUID())
                                                     .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {

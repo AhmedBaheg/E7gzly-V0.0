@@ -1,25 +1,29 @@
 package com.example.e7gzly.fragment;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.e7gzly.R;
+import com.example.e7gzly.model.User;
 import com.example.e7gzly.utilities.Constants;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -34,69 +38,102 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import static android.app.Activity.RESULT_OK;
 
-
-/**
- * A simple {@link Fragment} subclass.
- */
 public class SettingsFragment extends Fragment {
 
-    View view;
-    Context context;
+    private View view;
+    private TextView profile_Name, profile_Email;
+    private CircleImageView img_Profile;
+    private ImageButton edit_name;
 
-    TextView profile_Name, profile_Email;
-    ImageView ic_Back_Profile;
-    CircleImageView img_Profile;
-
-    private static final int Gallaery_Pic = 1;
+    private static final int Gallery_Pic = 1;
 
     private Uri uri;
-
+    private String name, email, exist_img_url;
     // Fire Base
 
     DatabaseReference databaseReference;
     FirebaseAuth firebaseAuth;
-    FirebaseUser firebaseUser;
-    String userId;
     StorageReference userProfileRef;
-    private String TAG;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_settings, container, false);
 
         //Fire Base
-
         firebaseAuth = FirebaseAuth.getInstance();
-        firebaseUser = firebaseAuth.getCurrentUser();
-        if (firebaseUser != null) {
-            userId = firebaseUser.getUid();
-        }
+        databaseReference = FirebaseDatabase.getInstance().getReference();
         userProfileRef = FirebaseStorage.getInstance().getReference().child("Profile Images");
 
         profile_Name = view.findViewById(R.id.tv_name_profile);
         profile_Email = view.findViewById(R.id.tv_email_profile);
         img_Profile = view.findViewById(R.id.img_user_profile);
+        edit_name = view.findViewById(R.id.btn_edit_name_profile);
 
-        ProfileInfoUser();
-        img_Profile = view.findViewById(R.id.img_user_profile);
-        img_Profile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                uploadImgProfile();
-            }
-        });
         return view;
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        // ProfileInfoUser();
+        returnData();
+        img_Profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CropImage.activity()
+                        .setGuidelines(CropImageView.Guidelines.ON_TOUCH)
+                        .setAutoZoomEnabled(true)
+                        .start(getContext(),SettingsFragment.this); // Mahmoud Crash Here //
 
-    private void ProfileInfoUser() {
+            }
+        });
 
-        databaseReference = FirebaseDatabase.getInstance().getReference().child(Constants.USERS).child(userId);
-        databaseReference.addValueEventListener(new ValueEventListener() {
+    }
+
+    /**
+     * {@link Picasso#get().placeholder}  && {@link Picasso#get().error}
+     * ده بيجيب الصوره من ال drawable في حالت ان حصل اي مشكله في ال URL اللي راجع
+     */
+    private void returnData() {
+        databaseReference.child(Constants.USERS).child(Constants.getUID()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+                if (user != null) {
+                    exist_img_url = user.getImgUrl();
+                    name = user.getFullName();
+                    email = user.getEmail();
+
+                    Picasso.get()
+                            .load(exist_img_url)
+                            .placeholder(R.drawable.default_pic_user)
+                            .error(R.drawable.default_pic_user)
+                            .into(img_Profile);
+                    profile_Name.setText(name);
+                    profile_Email.setText(email);
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    /**
+     * يعني انا عاملك class User علشان تجيب الداتا من الفير بيز بيه
+     * وانت جاي تجيب الداتا كده
+     * والله حرام عليك
+     * عملتلك الصح في ميثود دي {@link #returnData()}
+     */
+ private void ProfileInfoUser() {
+
+        databaseReference.child(Constants.USERS).child("userId").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -120,58 +157,100 @@ public class SettingsFragment extends Fragment {
 
     }
 
-    private void uploadImgProfile() {
+   /**
+    * {@link CropImage} مش هتستعمل دي لو هتستخدم
+    * */
+    public void uploadImgProfile() {
 
         // Open Gallery
         Intent galleryIntent = new Intent();
         galleryIntent.setAction(Intent.ACTION_PICK);
         galleryIntent.setType("image/*");
-        startActivityForResult(galleryIntent, Gallaery_Pic);
+        startActivityForResult(galleryIntent, Gallery_Pic);
+
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == Activity.RESULT_OK) {
+                if (result != null) {
+                    uri = result.getUri();
+
+                    Picasso.get()
+                            .load(uri)
+                            .placeholder(R.drawable.default_pic_user)
+                            .error(R.drawable.default_pic_user)
+                            .into(img_Profile);
+                    updateInfo(name, email, uri);
+                    returnData();
+                }
+            } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
+
+            }
+
+        }
+    }
+
+    private void updateInfo(final String name, final String email, Uri add_pic) {
+
+        UploadTask uploadTask;
+
+        final StorageReference rf = userProfileRef.child("/Profile Images" + add_pic.getLastPathSegment());
+
+        uploadTask = rf.putFile(add_pic);
+
+        Task<Uri> uriTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+            @Override
+            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                if (!task.isSuccessful()) {
+                    throw task.getException();
+                }
+                return rf.getDownloadUrl();
+            }
+        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                Uri downloadUri = task.getResult();
+                String user_Pic = downloadUri.toString();
+
+                saveInfoDB(user_Pic, name, email);
+                returnData();
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getContext(), "Can't Upload Photo", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+    }
+
+    private void saveInfoDB(String user_pic, String name, String email) {
+        User user;
+        if (TextUtils.isEmpty(user_pic)) {
+            user = new User(name, email);
+        }else {
+            user =new User(name,email,user_pic);
+        }
+        databaseReference.child(Constants.USERS).child(Constants.getUID()).setValue(user);
 
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        // Set Image From Gallery
-        if (requestCode == Gallaery_Pic && resultCode == RESULT_OK) {
-
-            uri = data.getData();
-
-            CropImage.activity(uri)
-                    .setGuidelines(CropImageView.Guidelines.ON)
-                    .setAspectRatio(1, 1) // Size Crop Image
-                    .start(getContext() , SettingsFragment.this); // Mahmoud Crash Here //
-        }
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-
-            if (resultCode == RESULT_OK) {
-                Uri resultUri = result.getUri();
-
-                final StorageReference filepath = userProfileRef.child(userId + "jpg");
-                filepath.putFile(resultUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-//                        Uri downloadUri = taskSnapshot.getStorage().getDownloadUrl().getResult();
-//                        databaseReference.child("imgUrl").setValue(downloadUri);
-
-                        filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                Log.d(TAG, uri.toString());
-                                databaseReference.child("imgUrl").setValue(uri.toString());
-                            }
-                        });
-                    }
-                });
-            }
-
-        }
-
+    public void onStart() {
+        super.onStart();
+        returnData();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        returnData();
+    }
 }

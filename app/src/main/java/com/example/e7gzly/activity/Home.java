@@ -107,15 +107,14 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         fragmentTransaction = fragmentManager.beginTransaction();
 
         fragmentTransaction.replace(R.id.container, Fragment);
-        fragmentTransaction.addToBackStack(null);
-
-        fragmentManager.popBackStack();
         // Commit the transaction
         fragmentTransaction.commit();
 
     }
 
-
+    /**
+     * {@link Picasso#get().placeholder}  && {@link Picasso#get().error}
+     * ده بيجيب الصوره من ال drawable في حالت ان حصل اي مشكله في ال URL اللي راجع*/
     public void returnData() {
 
         databaseReference.child(Constants.USERS).child(Constants.getUID()).addValueEventListener(new ValueEventListener() {
@@ -125,8 +124,11 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
                 nav_Drawer_Email.setText(user.getEmail());
                 nav_Drawer_Name.setText(user.getFullName());
-                String img = dataSnapshot.child("imgUrl").getValue().toString();
-                Picasso.get().load(img).into(img_Drawer);
+                Picasso.get()
+                        .load(user.getImgUrl())
+                        .placeholder(R.drawable.default_pic_user)
+                        .error(R.drawable.default_pic_user)
+                        .into(img_Drawer);
             }
 
             @Override
@@ -168,5 +170,21 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         return true;
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        returnData();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        returnData();
+    }
+
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(false);
+    }
 
 }
