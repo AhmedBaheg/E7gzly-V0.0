@@ -12,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.e7gzly.R;
+import com.example.e7gzly.dialog.ErrorConnectionDialog;
+import com.example.e7gzly.model.CheckConnection;
 import com.example.e7gzly.model.User;
 import com.example.e7gzly.utilities.Constants;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -25,7 +27,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class sign_up extends AppCompatActivity {
+public class sign_up extends AppCompatActivity implements View.OnClickListener {
 
     Button btn_Sign_Up_Now;
     TextView tv_Login;
@@ -51,20 +53,10 @@ public class sign_up extends AppCompatActivity {
         ed_Password = findViewById(R.id.ed_Password);
         ed_Confirm_Password = findViewById(R.id.ed_confirm_Password);
         btn_Sign_Up_Now = findViewById(R.id.btn_sign_up_now);
-        btn_Sign_Up_Now.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                userSignUp();
-            }
-        });
+        btn_Sign_Up_Now.setOnClickListener(this);
 
         tv_Login = findViewById(R.id.tv_login);
-        tv_Login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(sign_up.this , login.class));
-            }
-        });
+        tv_Login.setOnClickListener(this);
 
 
     }
@@ -201,5 +193,25 @@ public class sign_up extends AppCompatActivity {
         Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (CheckConnection.isConnected(this)){
+
+            switch (v.getId()){
+                case R.id.btn_sign_up_now :
+                    userSignUp();
+                    break;
+                case R.id.tv_login :
+                    startActivity(new Intent(sign_up.this , login.class));
+                    break;
+            }
+
+        }else {
+            ErrorConnectionDialog dialog = new ErrorConnectionDialog(this);
+            dialog.show();
+            dialog.checkConnection();
+        }
     }
 }

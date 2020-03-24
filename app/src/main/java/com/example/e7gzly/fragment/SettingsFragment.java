@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.e7gzly.R;
+import com.example.e7gzly.dialog.EditDialog;
 import com.example.e7gzly.model.User;
 import com.example.e7gzly.utilities.Constants;
 import com.google.android.gms.tasks.Continuation;
@@ -45,8 +46,6 @@ public class SettingsFragment extends Fragment {
     private TextView profile_Name, profile_Email;
     private CircleImageView img_Profile;
     private ImageButton edit_name;
-
-    private static final int Gallery_Pic = 1;
 
     private Uri uri;
     private String name, email, exist_img_url;
@@ -84,12 +83,34 @@ public class SettingsFragment extends Fragment {
             public void onClick(View v) {
                 CropImage.activity()
                         .setGuidelines(CropImageView.Guidelines.ON_TOUCH)
+                        .setAspectRatio(1, 1)
                         .setAutoZoomEnabled(true)
-                        .start(getContext(),SettingsFragment.this); // Mahmoud Crash Here //
-
+                        .start(getContext(), SettingsFragment.this); // Mahmoud Crash Here //
             }
         });
 
+        edit_name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final EditDialog editDialog = new EditDialog(getContext());
+                editDialog.ed_dialog_name.setText(name);
+
+                editDialog.btn_save.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (!editDialog.validationName()){
+                            return;
+                        }
+                        name = editDialog.ed_dialog_name.getText().toString();
+                        saveInfoDB(exist_img_url , name , email);
+                        returnData();
+                        editDialog.dismiss();
+                    }
+                });
+
+                editDialog.show();
+            }
+        });
     }
 
     /**
@@ -131,45 +152,45 @@ public class SettingsFragment extends Fragment {
      * والله حرام عليك
      * عملتلك الصح في ميثود دي {@link #returnData()}
      */
- private void ProfileInfoUser() {
+// private void ProfileInfoUser() {
+//
+//        databaseReference.child(Constants.USERS).child("userId").addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//
+//                databaseReference = FirebaseDatabase.getInstance().getReference().child(Constants.USERS);
+//
+//                String name = dataSnapshot.child("fullName").getValue().toString();
+//                profile_Name.setText(name);
+//                String email = dataSnapshot.child("email").getValue().toString();
+//                profile_Email.setText(email);
+//                String img = dataSnapshot.child("imgUrl").getValue().toString();
+//                Picasso.get().load(img).into(img_Profile);
+//
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
+//
+//    }
 
-        databaseReference.child(Constants.USERS).child("userId").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+    /**
+     * {@link CropImage} مش هتستعمل دي لو هتستخدم
+     */
 
-                databaseReference = FirebaseDatabase.getInstance().getReference().child(Constants.USERS);
-
-                String name = dataSnapshot.child("fullName").getValue().toString();
-                profile_Name.setText(name);
-                String email = dataSnapshot.child("email").getValue().toString();
-                profile_Email.setText(email);
-                String img = dataSnapshot.child("imgUrl").getValue().toString();
-                Picasso.get().load(img).into(img_Profile);
-
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-    }
-
-   /**
-    * {@link CropImage} مش هتستعمل دي لو هتستخدم
-    * */
-    public void uploadImgProfile() {
-
-        // Open Gallery
-        Intent galleryIntent = new Intent();
-        galleryIntent.setAction(Intent.ACTION_PICK);
-        galleryIntent.setType("image/*");
-        startActivityForResult(galleryIntent, Gallery_Pic);
-
-    }
-
+//    public void uploadImgProfile() {
+//
+//        // Open Gallery
+//        Intent galleryIntent = new Intent();
+//        galleryIntent.setAction(Intent.ACTION_PICK);
+//        galleryIntent.setType("image/*");
+//        startActivityForResult(galleryIntent, Gallery_Pic);
+//
+//    }
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -235,8 +256,8 @@ public class SettingsFragment extends Fragment {
         User user;
         if (TextUtils.isEmpty(user_pic)) {
             user = new User(name, email);
-        }else {
-            user =new User(name,email,user_pic);
+        } else {
+            user = new User(name, email, user_pic);
         }
         databaseReference.child(Constants.USERS).child(Constants.getUID()).setValue(user);
 
@@ -253,4 +274,6 @@ public class SettingsFragment extends Fragment {
         super.onResume();
         returnData();
     }
+
+
 }

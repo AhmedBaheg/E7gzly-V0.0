@@ -18,9 +18,11 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.e7gzly.R;
+import com.example.e7gzly.dialog.ErrorConnectionDialog;
 import com.example.e7gzly.fragment.MyTicketFragment;
 import com.example.e7gzly.fragment.SearchFragment;
 import com.example.e7gzly.fragment.SettingsFragment;
+import com.example.e7gzly.model.CheckConnection;
 import com.example.e7gzly.model.User;
 import com.example.e7gzly.utilities.Constants;
 import com.google.android.material.navigation.NavigationView;
@@ -114,7 +116,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
     /**
      * {@link Picasso#get().placeholder}  && {@link Picasso#get().error}
-     * ده بيجيب الصوره من ال drawable في حالت ان حصل اي مشكله في ال URL اللي راجع*/
+     * ده بيجيب الصوره من ال drawable في حالت ان حصل اي مشكله في ال URL اللي راجع
+     */
     public void returnData() {
 
         databaseReference.child(Constants.USERS).child(Constants.getUID()).addValueEventListener(new ValueEventListener() {
@@ -142,31 +145,38 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
-        switch (menuItem.getItemId()) {
-            case R.id.get_ticket:
-                loadFragment(new SearchFragment());
-                title.setText("Search");
-                break;
-            case R.id.ticket:
-                loadFragment(new MyTicketFragment());
-                title.setText("My Tickets");
-                break;
-            case R.id.settings:
-                loadFragment(new SettingsFragment());
-                title.setText("Settings");
-                break;
-            case R.id.logout:
-                FirebaseAuth.getInstance().signOut();
+        if (CheckConnection.isConnected(this)) {
 
-                Intent intent = new Intent(Home.this, MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
+            switch (menuItem.getItemId()) {
+                case R.id.get_ticket:
+                    loadFragment(new SearchFragment());
+                    title.setText("Search");
+                    break;
+                case R.id.ticket:
+                    loadFragment(new MyTicketFragment());
+                    title.setText("My Tickets");
+                    break;
+                case R.id.settings:
+                    loadFragment(new SettingsFragment());
+                    title.setText("Settings");
+                    break;
+                case R.id.logout:
+                    FirebaseAuth.getInstance().signOut();
 
-                break;
+                    Intent intent = new Intent(Home.this, MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    break;
 
+            }
+
+            drawerLayout.closeDrawer(GravityCompat.START);
+        }else {
+            ErrorConnectionDialog dialog = new ErrorConnectionDialog(this);
+            dialog.show();
+            dialog.checkConnection();
         }
 
-        drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
 

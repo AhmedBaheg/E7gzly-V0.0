@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.e7gzly.R;
+import com.example.e7gzly.dialog.ErrorConnectionDialog;
+import com.example.e7gzly.model.CheckConnection;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
@@ -20,7 +22,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class login extends AppCompatActivity {
+public class login extends AppCompatActivity implements View.OnClickListener {
 
     Button btn_Login_Now;
     TextInputLayout ed_Email_Login, ed_Password_Login;
@@ -40,27 +42,18 @@ public class login extends AppCompatActivity {
         ed_Email_Login = findViewById(R.id.ed_email_login);
         ed_Password_Login = findViewById(R.id.ed_Password_login);
         btn_Login_Now = findViewById(R.id.btn_login_now);
-        btn_Login_Now.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                UserLogin(ed_Email_Login.getText().toString(), ed_Password_Login.getText().toString());
-                UserLogin();
-            }
-        });
-
+        btn_Login_Now.setOnClickListener(this);
         tv_Forgot_Password = findViewById(R.id.tv_forgot_password);
-        tv_Forgot_Password.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(login.this, Forgot_Password.class));
-            }
-        });
+        tv_Forgot_Password.setOnClickListener(this);
+
 
     }
 
     private void UserLogin() {
         String email = ed_Email_Login.getEditText().getText().toString();
         String password = ed_Password_Login.getEditText().getText().toString();
+
+
 
         if (!validationEmail()) {
             ed_Email_Login.requestFocus();
@@ -129,4 +122,23 @@ public class login extends AppCompatActivity {
         return matcher.matches();
     }
 
+    @Override
+    public void onClick(View v) {
+        if (CheckConnection.isConnected(this)){
+
+            switch (v.getId()){
+                case R.id.btn_login_now :
+                    UserLogin();
+                    break;
+                case R.id.tv_forgot_password :
+                    startActivity(new Intent(login.this , Forgot_Password.class));
+                    break;
+            }
+
+        }else {
+            ErrorConnectionDialog dialog = new ErrorConnectionDialog(this);
+            dialog.show();
+            dialog.checkConnection();
+        }
+    }
 }

@@ -1,13 +1,15 @@
 package com.example.e7gzly.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.e7gzly.R;
+import com.example.e7gzly.dialog.ErrorConnectionDialog;
+import com.example.e7gzly.model.CheckConnection;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -28,31 +30,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    private void openSignUpActivity() {
-
-        Intent intent = new Intent(this , sign_up.class);
-        startActivity(intent);
-
-    }
-
-    private void openLoginActivity() {
-
-        Intent intent = new Intent(this , login.class);
-        startActivity(intent);
-
-    }
-
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        if (CheckConnection.isConnected(this)) {
+            switch (v.getId()) {
 
-            case R.id.btn_sign_up :
-                openSignUpActivity();
-                break;
-            case R.id.btn_login :
-                openLoginActivity();
-                break;
+                case R.id.btn_sign_up:
+                    startActivity(new Intent(MainActivity.this , sign_up.class));
+                    break;
+                case R.id.btn_login:
+                    startActivity(new Intent(MainActivity.this , login.class));
+                    break;
 
+            }
+        }else {
+            ErrorConnectionDialog dialog = new ErrorConnectionDialog(this);
+            dialog.show();
+            dialog.checkConnection();
         }
     }
 }

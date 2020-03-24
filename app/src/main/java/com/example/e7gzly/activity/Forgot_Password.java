@@ -10,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.e7gzly.R;
+import com.example.e7gzly.dialog.ErrorConnectionDialog;
+import com.example.e7gzly.model.CheckConnection;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
@@ -42,8 +44,13 @@ public class Forgot_Password extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                resetForgotPass();
-
+                if (CheckConnection.isConnected(Forgot_Password.this)) {
+                    resetForgotPass();
+                }else {
+                    ErrorConnectionDialog dialog = new ErrorConnectionDialog(Forgot_Password.this);
+                    dialog.show();
+                    dialog.checkConnection();
+                }
             }
         });
 
@@ -84,12 +91,12 @@ public class Forgot_Password extends AppCompatActivity {
 
     }
 
-    private boolean validationEmail(){
+    private boolean validationEmail() {
         String input_FGB_Email = ed_FGP_Email.getEditText().getText().toString();
-        if (input_FGB_Email.isEmpty()){
+        if (input_FGB_Email.isEmpty()) {
             ed_FGP_Email.setError("Enter Your Email");
             return false;
-        }else if (!isEmailValid(input_FGB_Email)){
+        } else if (!isEmailValid(input_FGB_Email)) {
             ed_FGP_Email.setError("Enter Correct Email example@example.com");
             return false;
         } else {
