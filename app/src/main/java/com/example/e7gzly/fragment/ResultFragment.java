@@ -2,31 +2,206 @@ package com.example.e7gzly.fragment;
 
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.e7gzly.R;
+import com.example.e7gzly.activity.Home;
+import com.example.e7gzly.adapters.ResultAdapter;
+import com.example.e7gzly.model.StopStationsModel;
+import com.example.e7gzly.model.TrainModel;
+import com.example.e7gzly.model.TripModel;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
-/**
- * A simple {@link Fragment} subclass.
- */
+import java.util.ArrayList;
+
+import static com.example.e7gzly.utilities.Constants.STOP_STATIONS;
+import static com.example.e7gzly.utilities.Constants.TRAINS;
+import static com.example.e7gzly.utilities.Constants.TRIP;
+
 public class ResultFragment extends Fragment {
+    //ARGs
+    private static final String FROM_KAY = "from";
+    private static final String FROM_ID_KAY = "from_id";
+    private static final String TO_KAY = "to";
+    private static final String TO_ID_KAY = "to_id";
+    private static final String TRAIN_CLASS_KAY = "class";
+
+    private String from;
+    private String from_id;
+    private String to;
+    private String to_id;
+    private String train_class;
+
+    private RecyclerView result_rv;
+    private ResultAdapter adapter;
+
+    private TripModel tripModel;
+    private ArrayList<TripModel> trip_list = new ArrayList();
+    private ArrayList<TrainModel> train_list = new ArrayList();
+    private ArrayList<StopStationsModel> from_stations_list = new ArrayList();
+    private ArrayList<StopStationsModel> to_stations_list = new ArrayList();
+
+    private FirebaseDatabase dp = FirebaseDatabase.getInstance();
+    private DatabaseReference databaseReference = dp.getReference();
 
 
-      public ResultFragment() {
-            // Required empty public constructor
-      }
+    public static ResultFragment newInstance(String from, String from_id, String to, String to_id, String train_class) {
+        ResultFragment fragment = new ResultFragment();
+        Bundle args = new Bundle();
+        args.putString(FROM_KAY, from);
+        args.putString(FROM_ID_KAY, from_id);
+        args.putString(TO_KAY, to);
+        args.putString(TO_ID_KAY, to_id);
+        args.putString(TRAIN_CLASS_KAY, train_class);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public static ResultFragment newInstance(String from, String from_id, String to, String to_id) {
+        ResultFragment fragment = new ResultFragment();
+        Bundle args = new Bundle();
+        args.putString(FROM_KAY, from);
+        args.putString(FROM_ID_KAY, from_id);
+        args.putString(TO_KAY, to);
+        args.putString(TO_ID_KAY, to_id);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            from = getArguments().getString(FROM_KAY);
+            from_id = getArguments().getString(FROM_ID_KAY);
+            to = getArguments().getString(TO_KAY);
+            to_id = getArguments().getString(TO_ID_KAY);
+            train_class = getArguments().getString(TRAIN_CLASS_KAY);
+        }
+
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_result, container, false);
+
+        result_rv = view.findViewById(R.id.rv_trips);
+
+        return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        ((Home) getActivity()).setActionBarTitle("Result");
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        result_rv.setHasFixedSize(true);
+        result_rv.setLayoutManager(linearLayoutManager);
+        getTrips();
+
+    }
+
+    private void getTrips() {
+        Query query;
+        final ArrayList<TrainModel> all_train = new ArrayList();
+        final ArrayList<TripModel> trips_before_filtered = new ArrayList();
+
+        if (TextUtils.isEmpty(train_class) || train_class.equals("اختر نوع القطار")) {
+
+            query = databaseReference.child(TRAINS);
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        all_train.add(snapshot.getValue(TrainModel.class));
+
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Toast.makeText(getContext(), "Loading Error", Toast.LENGTH_SHORT).show();
+                    Log.println(Log.ERROR, "Train onCancelled : ", databaseError.getMessage() + "\n" + databaseError.getDetails());
+                }
+            });
 
 
-      @Override
-      public View onCreateView(LayoutInflater inflater , ViewGroup container ,
-                               Bundle savedInstanceState) {
-            // Inflate the layout for this fragment
-            return inflater.inflate(R.layout.fragment_result , container , false);
-      }
+            databaseReference.child(TRIP).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    // git available trip has "selected from station"
+                    for (DataSnapshot ds_trip : dataSnapshot.getChildren()) {
+
+                        for (DataSnapshot ds_stop_sta : ds_trip.child(STOP_STATIONS).getChildren()) {
+                            StopStationsModel from_station = ds_stop_sta.getValue(StopStationsModel.class);
+
+                            if (from_station.getSt_id().equalsIgnoreCase(from_id)) {
+                                tripModel = ds_trip.getValue(TripModel.class);
+
+                                for (StopStationsModel to_station : tripModel.getStop_stations()) {
+
+                                    if (to_station.getSt_id().equalsIgnoreCase(to_id)) {
+
+                                        if (from_station.getSt_pos() < to_station.getSt_pos()) {
+                                            from_stations_list.add(from_station);
+                                            to_stations_list.add(to_station);
+                                            trip_list.add(tripModel);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    for (TripModel trip : trip_list) {
+                        for (TrainModel train : all_train) {
+                            if (trip.getTrain_id().equalsIgnoreCase(train.getTrain_id())) {
+                                train_list.add(train);
+                            }
+                        }
+                    }
+                    showResult();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Toast.makeText(getContext(), "Loading Error", Toast.LENGTH_SHORT).show();
+                    Log.println(Log.ERROR, "Trip onCancelled : ", databaseError.getMessage() + "\n" + databaseError.getDetails());
+                }
+            });
+        } else {
+
+        }
+
+    }
+
+
+    private void showResult() {
+        adapter = new ResultAdapter(trip_list, train_list, from_stations_list, to_stations_list, getContext());
+        result_rv.setAdapter(adapter);
+        Log.println(Log.ASSERT, "FROM STATION: ", String.valueOf(from_stations_list));
+        Log.println(Log.ASSERT, "TO STATION: ", String.valueOf(to_stations_list));
+        Log.println(Log.ASSERT, "TRIPS: ", String.valueOf(trip_list));
+        Log.println(Log.ASSERT, "TRAINS: ", String.valueOf(train_list));
+    }
 
 }

@@ -14,7 +14,6 @@ import com.example.e7gzly.R;
 import com.example.e7gzly.model.StationsModel;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class StationAdapter extends ArrayAdapter<StationsModel> {
     int pos = -1;
@@ -53,13 +52,13 @@ public class StationAdapter extends ArrayAdapter<StationsModel> {
                 convertView.setVisibility(View.GONE);
             } else {
                 if (stations != null) {
-                    id.setText(stations.getSt_id());
+                    id.setText(String.valueOf(stations.getSt_id()));
                     textViewName.setText(stations.getSt_name());
                 }
             }
         } else {
             if (stations != null) {
-                id.setText(stations.getSt_id());
+                id.setText(String.valueOf(stations.getSt_id()));
                 textViewName.setText(stations.getSt_name());
             }
         }

@@ -103,12 +103,11 @@ public class SettingsFragment extends Fragment {
                         }
                         name = editDialog.ed_dialog_name.getText().toString();
                         saveInfoDB(exist_img_url , name , email);
-                        returnData();
                         editDialog.dismiss();
                     }
                 });
-
                 editDialog.show();
+                returnData();
             }
         });
     }

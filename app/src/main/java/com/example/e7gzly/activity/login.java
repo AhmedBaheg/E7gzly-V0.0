@@ -46,46 +46,48 @@ public class login extends AppCompatActivity implements View.OnClickListener {
         tv_Forgot_Password = findViewById(R.id.tv_forgot_password);
         tv_Forgot_Password.setOnClickListener(this);
 
-
     }
+
 
     private void UserLogin() {
         String email = ed_Email_Login.getEditText().getText().toString();
         String password = ed_Password_Login.getEditText().getText().toString();
 
+        if (CheckConnection.isConnected(this)) {
+            if (!validationEmail()) {
+                ed_Email_Login.requestFocus();
 
-
-        if (!validationEmail()) {
-            ed_Email_Login.requestFocus();
-
-        } else if (!validationPassword()) {
-            ed_Password_Login.requestFocus();
-        } else {
-
-            firebaseAuth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                // Sign in success, update UI with the signed-in user's information
-                                if (firebaseAuth.getCurrentUser().isEmailVerified()) {
-                                    startActivity(new Intent(login.this, Home.class));
+            } else if (!validationPassword()) {
+                ed_Password_Login.requestFocus();
+            } else {
+                firebaseAuth.signInWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    // Sign in success, update UI with the signed-in user's information
+                                    if (firebaseAuth.getCurrentUser().isEmailVerified()) {
+                                        startActivity(new Intent(login.this, Home.class));
+                                    } else {
+                                        Toast.makeText(login.this, "Please Check Your Email And Verify Your Account", Toast.LENGTH_LONG).show();
+                                    }
                                 } else {
-                                    Toast.makeText(login.this, "Please Check Your Email And Verify Your Account", Toast.LENGTH_LONG).show();
+                                    // If sign in fails, display a message to the user.
+                                    Toast.makeText(login.this, "Email Or Password Incorrect", Toast.LENGTH_SHORT).show();
                                 }
-                            } else {
-                                // If sign in fails, display a message to the user.
-                                Toast.makeText(login.this, "Email Or Password Incorrect", Toast.LENGTH_SHORT).show();
+
+                                // ...
                             }
+                        });
 
-                            // ...
-                        }
-                    });
-
+            }
+        } else {
+            ErrorConnectionDialog dialog = new ErrorConnectionDialog(this);
+            dialog.show();
+            dialog.checkConnection();
+        }
         }
 
-
-    }
 
     private boolean validationEmail() {
         String input_Email = ed_Email_Login.getEditText().getText().toString();

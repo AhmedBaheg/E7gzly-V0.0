@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="train_class">
+        <item>اختر نوع القطار</item>
         <item>مكيف</item>
         <item>VIP</item>
         <item>قطر نوم</item>

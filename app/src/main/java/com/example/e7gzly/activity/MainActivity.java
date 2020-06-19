@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.e7gzly.R;
 import com.example.e7gzly.dialog.ErrorConnectionDialog;
 import com.example.e7gzly.model.CheckConnection;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -31,12 +33,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        checkUser();
+    }
+
+    private void checkUser() {
+        if (CheckConnection.isConnected(this)) {
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            if (user != null) {
+                startActivity(new Intent(this, Home.class));
+            }
+        } else {
+            ErrorConnectionDialog dialog = new ErrorConnectionDialog(this);
+            dialog.show();
+            dialog.checkConnection();
+        }
+
+    }
+
+    @Override
     public void onClick(View v) {
         if (CheckConnection.isConnected(this)) {
             switch (v.getId()) {
 
                 case R.id.btn_sign_up:
-                    startActivity(new Intent(MainActivity.this , sign_up.class));
+                    startActivity(new Intent(MainActivity.this, sign_up.class));
                     break;
                 case R.id.btn_login:
                     startActivity(new Intent(MainActivity.this , login.class));

@@ -1,7 +1,6 @@
 package com.example.e7gzly.fragment;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.e7gzly.R;
+import com.example.e7gzly.activity.Home;
 import com.example.e7gzly.adapters.StationAdapter;
 import com.example.e7gzly.model.StationsModel;
 import com.example.e7gzly.utilities.Constants;
@@ -61,6 +61,7 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
         checkBox_class = v.findViewById(R.id.cb_class);
         to_spinner.setEnabled(false);
         class_spinner.setEnabled(false);
+        search_btn.setEnabled(false);
         return v;
     }
 
@@ -72,9 +73,11 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
         checkBox_class.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                is_checked = isChecked;
                 if (isChecked) {
                     class_spinner.setEnabled(true);
                     class_spinner.setOnItemSelectedListener(SearchFragment.this);
+
                 }
             }
         });
@@ -116,7 +119,6 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         switch (parent.getId()) {
             case R.id.sp_from:
-
                 StationsModel from_click = (StationsModel) from_spinner.getSelectedItem();
                 selected_from = from_click.getSt_name();
                 selected_from_id = from_click.getSt_id();
@@ -134,12 +136,19 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
             case R.id.sp_to:
 
                 StationsModel to_click = (StationsModel) to_spinner.getSelectedItem();
-                selected_to = to_click.getSt_name();
-                selected_to_id = to_click.getSt_id();
+                if (to_spinner.getSelectedItem() != null && position != 0) {
+                    selected_to = to_click.getSt_name();
+                    selected_to_id = to_click.getSt_id();
+                    search_btn.setEnabled(true);
+                } else {
+                    search_btn.setEnabled(false);
+                }
                 break;
 
             case R.id.sp_train_class:
-                selected_class = class_spinner.getSelectedItem().toString();
+                if (!class_spinner.getSelectedItem().equals("اختر نوع القطار")) {
+                    selected_class = class_spinner.getSelectedItem().toString();
+                }
                 break;
         }
     }
@@ -151,6 +160,15 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
 
     @Override
     public void onClick(View v) {
+        ResultFragment fragment;
+        if (!is_checked) {
+            fragment = ResultFragment.newInstance(selected_from, selected_from_id, selected_to, selected_to_id);
+        } else {
+            fragment = ResultFragment.newInstance(selected_from, selected_from_id, selected_to, selected_to_id, selected_class);
+        }
+        if (getActivity() != null) {
+            ((Home) getActivity()).loadFragment(fragment);
+        }
 
     }
 }

@@ -104,11 +104,17 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
     }
 
-    private void loadFragment(Fragment Fragment) {
+    public void setActionBarTitle(String title) {
+        this.title.setText(title);
+    }
+
+    public void loadFragment(Fragment Fragment) {
 
         fragmentTransaction = fragmentManager.beginTransaction();
 
         fragmentTransaction.replace(R.id.container, Fragment);
+        fragmentTransaction.addToBackStack(null);
+
         // Commit the transaction
         fragmentTransaction.commit();
 
@@ -194,7 +200,11 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
     @Override
     public void onBackPressed() {
-        moveTaskToBack(false);
+        if (getSupportFragmentManager().getBackStackEntryCount() != 0) {
+            getSupportFragmentManager().popBackStack();
+        } else {
+            moveTaskToBack(true);
+        }
     }
 
 }
