@@ -210,6 +210,8 @@ public class ResultFragment extends Fragment {
                 }
             });
 
+
+
             databaseReference.child(TRIP).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
