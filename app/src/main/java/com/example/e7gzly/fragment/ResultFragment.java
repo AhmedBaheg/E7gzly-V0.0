@@ -32,6 +32,8 @@ import java.util.ArrayList;
 
 import static com.example.e7gzly.utilities.Constants.STOP_STATIONS;
 import static com.example.e7gzly.utilities.Constants.TRAINS;
+import static com.example.e7gzly.utilities.Constants.TRAIN_CLASS;
+import static com.example.e7gzly.utilities.Constants.TRAIN_ID;
 import static com.example.e7gzly.utilities.Constants.TRIP;
 
 public class ResultFragment extends Fragment {
@@ -120,13 +122,13 @@ public class ResultFragment extends Fragment {
     }
 
     private void getTrips() {
-        Query query;
+        Query query = databaseReference.child(TRAINS);
+        ;
         final ArrayList<TrainModel> all_train = new ArrayList();
         final ArrayList<TripModel> trips_before_filtered = new ArrayList();
 
         if (TextUtils.isEmpty(train_class) || train_class.equals("اختر نوع القطار")) {
 
-            query = databaseReference.child(TRAINS);
             query.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -189,7 +191,62 @@ public class ResultFragment extends Fragment {
                 }
             });
         } else {
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        if (ds.child(TRAIN_CLASS).getValue(String.class).equalsIgnoreCase(train_class)) {
+                            train_list.add(ds.getValue(TrainModel.class));
 
+                        }
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Toast.makeText(getContext(), "Loading Error", Toast.LENGTH_SHORT).show();
+                    Log.println(Log.ERROR, "Train onCancelled : ", error.getMessage() + "\n" + error.getDetails());
+                }
+            });
+
+            databaseReference.child(TRIP).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                    for (DataSnapshot trip_ds : snapshot.getChildren()) {
+                        for (TrainModel train : train_list) {
+                            if (trip_ds.child(TRAIN_ID).getValue(String.class).equalsIgnoreCase(train.getTrain_id())) {
+                                for (DataSnapshot ds_stop_sta : trip_ds.child(STOP_STATIONS).getChildren()) {
+                                    StopStationsModel from_station = ds_stop_sta.getValue(StopStationsModel.class);
+
+                                    if (from_station.getSt_id().equalsIgnoreCase(from_id)) {
+                                        tripModel = trip_ds.getValue(TripModel.class);
+
+                                        for (StopStationsModel to_station : tripModel.getStop_stations()) {
+
+                                            if (to_station.getSt_id().equalsIgnoreCase(to_id)) {
+
+                                                if (from_station.getSt_pos() < to_station.getSt_pos()) {
+                                                    from_stations_list.add(from_station);
+                                                    to_stations_list.add(to_station);
+                                                    trip_list.add(tripModel);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    showResult();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
         }
 
     }
@@ -198,6 +255,8 @@ public class ResultFragment extends Fragment {
     private void showResult() {
         adapter = new ResultAdapter(trip_list, train_list, from_stations_list, to_stations_list, getContext());
         result_rv.setAdapter(adapter);
+
+
         Log.println(Log.ASSERT, "FROM STATION: ", String.valueOf(from_stations_list));
         Log.println(Log.ASSERT, "TO STATION: ", String.valueOf(to_stations_list));
         Log.println(Log.ASSERT, "TRIPS: ", String.valueOf(trip_list));
