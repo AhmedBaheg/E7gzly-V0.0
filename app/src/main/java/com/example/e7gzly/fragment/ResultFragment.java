@@ -123,9 +123,7 @@ public class ResultFragment extends Fragment {
 
     private void getTrips() {
         Query query = databaseReference.child(TRAINS);
-        ;
         final ArrayList<TrainModel> all_train = new ArrayList();
-        final ArrayList<TripModel> trips_before_filtered = new ArrayList();
 
         if (TextUtils.isEmpty(train_class) || train_class.equals("اختر نوع القطار")) {
 
@@ -260,8 +258,8 @@ public class ResultFragment extends Fragment {
 
         adapter.setOnItemClickListener(new ResultAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(View view, int position) {
-                Toast.makeText(getContext(), "item "+ position + "clicked", Toast.LENGTH_SHORT).show();
+            public void onItemClick(View view, int position, String leave) {
+                Toast.makeText(getContext(), "item "+ leave + "clicked", Toast.LENGTH_SHORT).show();
                 Toast.makeText(getContext(), String.valueOf(trip_list.get(position).getTrip_line()), Toast.LENGTH_SHORT).show();
             }
         });

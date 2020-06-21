@@ -74,7 +74,7 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ResultHold
 
 
     public interface OnItemClickListener {
-        void onItemClick(View view, int position);
+        void onItemClick(View view, int position, String leave);
     }
 
     public class ResultHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -100,7 +100,7 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ResultHold
 
         @Override
         public void onClick(View v) {
-            listener.onItemClick(v,getAdapterPosition());
+            listener.onItemClick(v,getAdapterPosition(),leave.getText().toString());
         }
     }
 }

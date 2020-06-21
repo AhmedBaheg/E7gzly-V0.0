@@ -6,7 +6,7 @@
         <item name="colorPrimary">@color/transparent</item>
         <item name="windowActionBarOverlay">true</item>
         <!-- Customize background to status bar -->
-        <item name="colorPrimaryDark">@color/colorSkyBlue</item>
+        <item name="colorPrimaryDark">@color/colorStatusBar</item>
         <!--Customize Drawer Bar Theme-->
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
 
@@ -17,7 +17,7 @@
         <item name="colorPrimary">@color/transparent</item>
         <item name="windowActionBarOverlay">true</item>
         <!-- Customize background to status bar -->
-        <item name="colorPrimaryDark">@color/colorSkyBlue</item>
+        <item name="colorPrimaryDark">@color/colorStatusBar</item>
         <!--Customize Drawer Bar Theme-->
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
 
