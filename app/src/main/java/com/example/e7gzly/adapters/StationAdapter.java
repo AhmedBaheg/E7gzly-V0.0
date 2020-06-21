@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -35,8 +36,8 @@ public class StationAdapter extends ArrayAdapter<StationsModel> {
 
     @Override
     public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-
-        return initView(position, convertView, parent);
+        View view = initView(position, convertView, parent);
+        return view;
     }
 
     private View initView(int position, View convertView, ViewGroup parent) {
@@ -45,16 +46,23 @@ public class StationAdapter extends ArrayAdapter<StationsModel> {
         }
         TextView id = convertView.findViewById(R.id.tv_station_id);
         TextView textViewName = convertView.findViewById(R.id.tv_station_name);
+
         StationsModel stations = getItem(position);
 
         if (pos != -1) {
-            if (position == pos) {
-                convertView.setVisibility(View.GONE);
-            } else {
+            if (position != pos) {
                 if (stations != null) {
+
+                    id.setVisibility(View.VISIBLE);
+                    textViewName.setVisibility(View.VISIBLE);
                     id.setText(String.valueOf(stations.getSt_id()));
                     textViewName.setText(stations.getSt_name());
                 }
+
+            } else {
+                id.setVisibility(View.GONE);
+                textViewName.setVisibility(View.GONE);
+
             }
         } else {
             if (stations != null) {
@@ -64,4 +72,5 @@ public class StationAdapter extends ArrayAdapter<StationsModel> {
         }
         return convertView;
     }
+
 }

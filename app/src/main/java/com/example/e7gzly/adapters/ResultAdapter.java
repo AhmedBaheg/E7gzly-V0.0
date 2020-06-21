@@ -26,6 +26,7 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ResultHold
     private ArrayList<StopStationsModel> from_stations_list;
     private ArrayList<StopStationsModel> to_stations_list;
     private Context context;
+    private OnItemClickListener clickListener;
 
     public ResultAdapter(ArrayList<TripModel> trip_list, ArrayList<TrainModel> train_list, ArrayList<StopStationsModel> from_stations_list, ArrayList<StopStationsModel> to_stations_list, Context context) {
         this.trip_list = trip_list;
@@ -39,7 +40,7 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ResultHold
     @Override
     public ResultHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.trips_item, parent, false);
-        return new ResultHolder(view);
+        return new ResultHolder(view,clickListener);
     }
 
     @Override
@@ -57,6 +58,7 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ResultHold
             holder.to.setText("To : " + to.getSt_name());
             holder.leave.setText("Leave At : " + CALCULATE_LEAVE_TIME(from.getArrive_time()));
             holder.arrive.setText("Arrive At : " + to.getArrive_time());
+
         }
 
     }
@@ -66,18 +68,39 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ResultHold
         return trip_list.size();
     }
 
+    public void setOnItemClickListener(OnItemClickListener clickListener ){
+        this.clickListener =clickListener;
+    }
 
-    public class ResultHolder extends RecyclerView.ViewHolder {
-        TextView line, from, to, leave, arrive, train_class;
 
-        public ResultHolder(@NonNull View itemView) {
+    public interface OnItemClickListener {
+        void onItemClick(View view, int position);
+    }
+
+    public class ResultHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        public TextView line;
+        public TextView from;
+        public TextView to;
+        public TextView leave;
+        public TextView arrive;
+        public TextView train_class;
+        public OnItemClickListener listener;
+
+        public ResultHolder(@NonNull View itemView,OnItemClickListener listener) {
             super(itemView);
+            itemView.setOnClickListener(this);
             line = itemView.findViewById(R.id.tv_line);
             from = itemView.findViewById(R.id.tv_from);
             to = itemView.findViewById(R.id.tv_to);
             leave = itemView.findViewById(R.id.tv_leave_time);
             arrive = itemView.findViewById(R.id.tv_arrive_time);
             train_class = itemView.findViewById(R.id.tv_train_class);
+            this.listener = listener;
+        }
+
+        @Override
+        public void onClick(View v) {
+            listener.onItemClick(v,getAdapterPosition());
         }
     }
 }

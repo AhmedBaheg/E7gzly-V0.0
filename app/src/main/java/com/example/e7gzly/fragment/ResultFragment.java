@@ -258,11 +258,19 @@ public class ResultFragment extends Fragment {
         adapter = new ResultAdapter(trip_list, train_list, from_stations_list, to_stations_list, getContext());
         result_rv.setAdapter(adapter);
 
+        adapter.setOnItemClickListener(new ResultAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Toast.makeText(getContext(), "item "+ position + "clicked", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), String.valueOf(trip_list.get(position).getTrip_line()), Toast.LENGTH_SHORT).show();
+            }
+        });
 
-        Log.println(Log.ASSERT, "FROM STATION: ", String.valueOf(from_stations_list));
-        Log.println(Log.ASSERT, "TO STATION: ", String.valueOf(to_stations_list));
-        Log.println(Log.ASSERT, "TRIPS: ", String.valueOf(trip_list));
-        Log.println(Log.ASSERT, "TRAINS: ", String.valueOf(train_list));
+//        Log.println(Log.ASSERT, "FROM STATION: ", String.valueOf(from_stations_list));
+//        Log.println(Log.ASSERT, "TO STATION: ", String.valueOf(to_stations_list));
+//        Log.println(Log.ASSERT, "TRIPS: ", String.valueOf(trip_list));
+//        Log.println(Log.ASSERT, "TRAINS: ", String.valueOf(train_list));
+
     }
 
 }
