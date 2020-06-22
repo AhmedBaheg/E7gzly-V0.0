@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:elevation="6dp"
     app:cardCornerRadius="5dp"
+    app:cardBackgroundColor="#00C8FF"
     app:cardPreventCornerOverlap="true"
     app:cardUseCompatPadding="true"
     app:contentPadding="8dp">
@@ -20,6 +21,7 @@
             android:minHeight="25dp"
             android:text="Line station - station"
             android:textSize="16sp"
+            android:textColor="@color/colorWhite"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -31,6 +33,7 @@
             android:minHeight="25dp"
             android:text="From : "
             android:textSize="16sp"
+            android:textColor="@color/colorWhite"
             app:layout_constraintStart_toStartOf="@id/tv_line"
             app:layout_constraintEnd_toStartOf="@id/tv_to"
             app:layout_constraintTop_toBottomOf="@id/tv_line" />
@@ -42,6 +45,7 @@
             android:minHeight="25dp"
             android:text="To : "
             android:textSize="16sp"
+            android:textColor="@color/colorWhite"
             app:layout_constraintStart_toEndOf="@id/tv_from"
             app:layout_constraintEnd_toEndOf="@id/tv_line"
             app:layout_constraintTop_toBottomOf="@id/tv_line" />
@@ -52,6 +56,7 @@
             android:layout_height="wrap_content"
             android:minHeight="25dp"
             android:text="Arrive At : "
+            android:textColor="@color/colorWhite"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="@id/tv_to"
             app:layout_constraintStart_toEndOf="@id/tv_leave_time"
@@ -63,6 +68,7 @@
             android:layout_height="wrap_content"
             android:minHeight="25dp"
             android:text="Leave At : "
+            android:textColor="@color/colorWhite"
             android:textSize="16sp"
             app:layout_constraintEnd_toStartOf="@id/tv_arrive_time"
             app:layout_constraintStart_toStartOf="@id/tv_from"
@@ -74,6 +80,7 @@
             android:layout_height="wrap_content"
             android:minHeight="25dp"
             android:text="Class : "
+            android:textColor="@color/colorWhite"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/tv_arrive_time"
