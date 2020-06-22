@@ -21,6 +21,7 @@ import com.example.e7gzly.adapters.ResultAdapter;
 import com.example.e7gzly.model.StopStationsModel;
 import com.example.e7gzly.model.TrainModel;
 import com.example.e7gzly.model.TripModel;
+import com.example.e7gzly.utilities.Utils;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -49,6 +50,9 @@ public class ResultFragment extends Fragment {
     private String to;
     private String to_id;
     private String train_class;
+    private String train_line;
+    private String arrive;
+    private String leave;
 
     private RecyclerView result_rv;
     private ResultAdapter adapter;
@@ -123,7 +127,7 @@ public class ResultFragment extends Fragment {
 
     private void getTrips() {
         Query query = databaseReference.child(TRAINS);
-        ;
+
         final ArrayList<TrainModel> all_train = new ArrayList();
         final ArrayList<TripModel> trips_before_filtered = new ArrayList();
 
@@ -137,6 +141,8 @@ public class ResultFragment extends Fragment {
                         all_train.add(snapshot.getValue(TrainModel.class));
 
                     }
+//                    Log.println(Log.ASSERT, "Array", String.valueOf(all_train.size()));
+
 
                 }
 
@@ -211,7 +217,6 @@ public class ResultFragment extends Fragment {
             });
 
 
-
             databaseReference.child(TRIP).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -261,8 +266,20 @@ public class ResultFragment extends Fragment {
         adapter.setOnItemClickListener(new ResultAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Toast.makeText(getContext(), "item "+ position + "clicked", Toast.LENGTH_SHORT).show();
-                Toast.makeText(getContext(), String.valueOf(trip_list.get(position).getTrip_line()), Toast.LENGTH_SHORT).show();
+                BookingFragment fragment;
+                Toast.makeText(getContext(), "item " + position + " clicked", Toast.LENGTH_SHORT).show();
+
+                leave = Utils.CALCULATE_LEAVE_TIME(from_stations_list.get(position).getArrive_time());
+                arrive = to_stations_list.get(position).getArrive_time();
+                train_line = trip_list.get(position).getTrip_line();
+                train_class = train_list.get(position).getTrain_class();
+
+
+                fragment = BookingFragment.newInstance(from, from_id, to, to_id, arrive, leave, train_class, train_line);
+                if (getActivity() != null) {
+                    ((Home) getActivity()).loadFragment(fragment);
+
+                }
             }
         });
 

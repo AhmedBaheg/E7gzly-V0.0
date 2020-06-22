@@ -20,7 +20,6 @@ import static com.example.e7gzly.utilities.Utils.CALCULATE_LEAVE_TIME;
 
 public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ResultHolder> {
 
-
     private ArrayList<TripModel> trip_list;
     private ArrayList<TrainModel> train_list;
     private ArrayList<StopStationsModel> from_stations_list;
@@ -40,7 +39,7 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ResultHold
     @Override
     public ResultHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.trips_item, parent, false);
-        return new ResultHolder(view,clickListener);
+        return new ResultHolder(view, clickListener);
     }
 
     @Override
@@ -50,7 +49,7 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ResultHold
         TrainModel trainModel = train_list.get(position);
         StopStationsModel from = from_stations_list.get(position);
         StopStationsModel to = to_stations_list.get(position);
-        
+
         if (tripModel != null && trainModel != null && from != null && to != null) {
             holder.line.setText("Line : " + tripModel.getTrip_line());
             holder.train_class.setText("Class : " + trainModel.getTrain_class());
@@ -68,8 +67,8 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ResultHold
         return trip_list.size();
     }
 
-    public void setOnItemClickListener(OnItemClickListener clickListener ){
-        this.clickListener =clickListener;
+    public void setOnItemClickListener(OnItemClickListener clickListener) {
+        this.clickListener = clickListener;
     }
 
 
@@ -86,7 +85,7 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ResultHold
         public TextView train_class;
         public OnItemClickListener listener;
 
-        public ResultHolder(@NonNull View itemView,OnItemClickListener listener) {
+        public ResultHolder(@NonNull View itemView, OnItemClickListener listener) {
             super(itemView);
             itemView.setOnClickListener(this);
             line = itemView.findViewById(R.id.tv_line);
@@ -100,7 +99,9 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ResultHold
 
         @Override
         public void onClick(View v) {
-            listener.onItemClick(v,getAdapterPosition());
+
+            listener.onItemClick(v, getAdapterPosition());
+
         }
     }
 }

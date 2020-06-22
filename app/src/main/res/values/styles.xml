@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -81,6 +81,10 @@
     <style name="HintTextEmailForgot_Sign_Up" parent="TextAppearance.Design.Hint">
         <item name="android:textColor">@color/colorPrimaryDark</item>
         <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="MyDatePickerDialogTheme" parent="android:Theme.Material.Light.Dialog" tools:targetApi="lollipop">
+        <item name="android:colorAccent" tools:targetApi="lollipop">@color/colorSkyBlueDark</item>
     </style>
 
 </resources>

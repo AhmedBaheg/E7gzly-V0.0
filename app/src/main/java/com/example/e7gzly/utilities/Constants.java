@@ -10,6 +10,7 @@ public class Constants {
     public static final String STOP_STATIONS = "stop_stations";
     public static final String TRAINS = "train";
     public static final String TRAIN_CLASS = "train_class";
+    public static final String TICKET_PRICES = "ticket_prices";
     public static final String TRAIN_ID = "train_id";
 
     public static String getUID() {
