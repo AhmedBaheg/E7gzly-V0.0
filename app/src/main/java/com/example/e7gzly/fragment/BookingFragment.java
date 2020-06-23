@@ -2,18 +2,24 @@ package com.example.e7gzly.fragment;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.e7gzly.R;
+import com.example.e7gzly.activity.Home;
+import com.example.e7gzly.model.PassengerInfo;
 import com.example.e7gzly.model.TicketModel;
 import com.example.e7gzly.utilities.Constants;
 import com.google.firebase.database.DataSnapshot;
@@ -35,6 +41,7 @@ public class BookingFragment extends Fragment {
     private static final String LEAVE_KAY = "leave";
     private static final String TRAIN_CLASS_KAY = "class";
     private static final String TRAIN_LINE_KAY = "line";
+    private static final String SEATS_KAY = "seats";
 
     private String from;
     private String from_id;
@@ -44,6 +51,12 @@ public class BookingFragment extends Fragment {
     private String leave;
     private String train_class;
     private String train_line;
+    private String getDate;
+    private String get_seats;
+    private int seats;
+    private int remaining_seats;
+    private int passenger_seat;
+    private double price;
 
     private TextView line;
     private TextView tv_class;
@@ -53,6 +66,8 @@ public class BookingFragment extends Fragment {
     private TextView tv_arrive;
     private TextView tv_price;
     private TextView date_picker;
+    private Button btn_booking;
+    private EditText seats_booked;
 
     private ArrayList<TicketModel> arrayList = new ArrayList<>();
     private TicketModel ticketModel;
@@ -62,7 +77,7 @@ public class BookingFragment extends Fragment {
 
     private DatabaseReference databaseReference;
 
-    public static BookingFragment newInstance(String from, String from_id, String to, String to_id, String arrive, String leave, String train_class, String train_line) {
+    public static BookingFragment newInstance(String from, String from_id, String to, String to_id, String arrive, String leave, String train_class, String train_line, int seats) {
         BookingFragment fragment = new BookingFragment();
         Bundle args = new Bundle();
         args.putString(FROM_KAY, from);
@@ -73,6 +88,7 @@ public class BookingFragment extends Fragment {
         args.putString(LEAVE_KAY, leave);
         args.putString(TRAIN_CLASS_KAY, train_class);
         args.putString(TRAIN_LINE_KAY, train_line);
+        args.putInt(SEATS_KAY, seats);
         fragment.setArguments(args);
         return fragment;
     }
@@ -89,6 +105,7 @@ public class BookingFragment extends Fragment {
         leave = getArguments().getString(LEAVE_KAY);
         train_class = getArguments().getString(TRAIN_CLASS_KAY);
         train_line = getArguments().getString(TRAIN_LINE_KAY);
+        seats = getArguments().getInt(SEATS_KAY);
 
     }
 
@@ -96,6 +113,8 @@ public class BookingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_booking, container, false);
+
+        ((Home) getActivity()).setActionBarTitle("Booking");
 
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
@@ -107,6 +126,8 @@ public class BookingFragment extends Fragment {
         tv_arrive = view.findViewById(R.id.arrive);
         tv_price = view.findViewById(R.id.tv_price);
         date_picker = view.findViewById(R.id.date_picker);
+        btn_booking = view.findViewById(R.id.btn_booking);
+        seats_booked = view.findViewById(R.id.seats_booked);
 
         line.setText("Line direction : " + train_line);
         tv_class.setText("Train class : " + train_class);
@@ -119,6 +140,14 @@ public class BookingFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 showDatePickerDialog();
+            }
+        });
+
+        btn_booking.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                booking();
+//                Log.println(Log.ASSERT , "SEATS" , String.valueOf(seats));
             }
         });
 
@@ -147,7 +176,8 @@ public class BookingFragment extends Fragment {
                         Log.println(Log.ASSERT, "From", String.valueOf(ticket.getStation_1()));
                         Log.println(Log.ASSERT, "TO", String.valueOf(ticket.getStation_2()));
 
-                        tv_price.setText(ticket.getPrice() + " L.E");
+                        price = ticket.getPrice();
+                        tv_price.setText(price + " L.E");
 
                     } else if (from_id.equalsIgnoreCase(ticket.getStation_2()) && to_id.equalsIgnoreCase(ticket.getStation_1())) {
 
@@ -188,6 +218,113 @@ public class BookingFragment extends Fragment {
         }, year, month, day);
         datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis()); // Disable Past Date
         datePickerDialog.show();
+
+    }
+
+    private void booking() {
+
+        getDate = date_picker.getText().toString();
+        get_seats = seats_booked.getText().toString();
+
+        if (TextUtils.isEmpty(getDate)) {
+            Toast.makeText(getContext(), "Please Choose The Date", Toast.LENGTH_LONG).show();
+        } else if (TextUtils.isEmpty(get_seats)) {
+            Toast.makeText(getContext(), "Please Enter Number Of Seats", Toast.LENGTH_LONG).show();
+        } else {
+
+            passenger_seat = Integer.parseInt(get_seats);
+
+            databaseReference.child("Test").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                    if (!snapshot.hasChild(getDate)) {
+
+                        remaining_seats = seats - passenger_seat;
+                        double total_price = price * passenger_seat;
+
+                        PassengerInfo info = new PassengerInfo(train_line, from, to, leave, arrive,
+                                train_class, getDate, passenger_seat, total_price);
+
+                        databaseReference.child("Test").child(getDate).child(train_line)
+                                .child(Constants.getUID()).child(train_line).setValue(info);
+
+                        databaseReference.child("Test").child(getDate).child(train_line).child("seats").setValue(remaining_seats);
+
+                    } else {
+
+                        databaseReference.child("Test").child(getDate)
+                                .addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        if (!snapshot.hasChild(train_line)) {
+
+                                            remaining_seats = seats - passenger_seat;
+                                            int total_price = (int) (price * passenger_seat);
+
+                                            PassengerInfo info = new PassengerInfo(train_line, from, to, leave, arrive,
+                                                    train_class, getDate, passenger_seat, total_price);
+
+                                            databaseReference.child("Test").child(getDate).child(train_line)
+                                                    .child(Constants.getUID()).child(train_line).setValue(info);
+
+                                            databaseReference.child("Test").child(getDate).child(train_line).child("seats").setValue(remaining_seats);
+
+                                        } else {
+
+                                            databaseReference.child("Test").child(getDate).child(train_line).orderByChild("seats")
+                                                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                                                        @Override
+                                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                                                            remaining_seats = snapshot.getValue(Integer.class);
+
+                                                            if (remaining_seats == 0) {
+                                                                Toast.makeText(getContext(), "The all train is busy please try search about another train", Toast.LENGTH_LONG).show();
+                                                            } else {
+
+                                                                int remaining = remaining_seats - passenger_seat;
+
+//                                                                int total_price = (int) (price * passenger_seat);
+//
+//                                                                PassengerInfo info = new PassengerInfo(train_line, from, to, leave, arrive,
+//                                                                        train_class, getDate, passenger_seat, total_price);
+//
+//                                                                databaseReference.child("Test").child(getDate).child(train_line)
+//                                                                        .child(Constants.getUID()).child(train_line).setValue(info);
+//                                                                databaseReference.child("Test").child(getDate).child(train_line).child("seats").setValue(remaining);
+                                                            }
+
+                                                        }
+
+                                                        @Override
+                                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                                        }
+                                                    });
+
+
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
+
+                    }
+
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
+        }
 
     }
 

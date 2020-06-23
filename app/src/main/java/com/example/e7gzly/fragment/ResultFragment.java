@@ -53,6 +53,7 @@ public class ResultFragment extends Fragment {
     private String train_line;
     private String arrive;
     private String leave;
+    private int seats;
 
     private RecyclerView result_rv;
     private ResultAdapter adapter;
@@ -273,9 +274,10 @@ public class ResultFragment extends Fragment {
                 arrive = to_stations_list.get(position).getArrive_time();
                 train_line = trip_list.get(position).getTrip_line();
                 train_class = train_list.get(position).getTrain_class();
+                seats = train_list.get(position).getSeats();
 
 
-                fragment = BookingFragment.newInstance(from, from_id, to, to_id, arrive, leave, train_class, train_line);
+                fragment = BookingFragment.newInstance(from, from_id, to, to_id, arrive, leave, train_class, train_line, seats);
                 if (getActivity() != null) {
                     ((Home) getActivity()).loadFragment(fragment);
 
