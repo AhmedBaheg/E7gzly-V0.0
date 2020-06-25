@@ -2,11 +2,18 @@ package com.example.e7gzly.model;
 
 public class PassengerInfo {
 
-    private String train_line , from , to , leave , arrive , train_class , date;
+    private String train_line;
+    private String from;
+    private String to;
+    private String leave;
+    private String arrive;
+    private String train_class;
+    private String date;
+    private String code;
     private int passenger_seats ;
     private double  price;
 
-    public PassengerInfo(String train_line, String from, String to, String leave, String arrive, String train_class, String date, int passenger_seats, double price) {
+    public PassengerInfo(String train_line, String from, String to, String leave, String arrive, String train_class, String date, int passenger_seats, double price, String code) {
         this.train_line = train_line;
         this.from = from;
         this.to = to;
@@ -16,6 +23,7 @@ public class PassengerInfo {
         this.date = date;
         this.passenger_seats = passenger_seats;
         this.price = price;
+        this.code = code;
     }
 
     public PassengerInfo() {
@@ -91,5 +99,13 @@ public class PassengerInfo {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }

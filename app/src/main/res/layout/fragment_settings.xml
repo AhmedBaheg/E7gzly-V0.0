@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/transparent"
+    android:fillViewport="true"
+    android:layout_gravity="center"
     tools:context=".fragment.SettingsFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent">
 
 
     <androidx.cardview.widget.CardView
@@ -15,11 +21,9 @@
         app:cardBackgroundColor="@color/colorSkyBlueDark"
         app:cardCornerRadius="20dp"
         app:cardElevation="10dp"
-        app:cardPreventCornerOverlap="true"
         app:cardUseCompatPadding="true"
         app:contentPaddingBottom="20dp"
         app:contentPaddingTop="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -65,7 +69,6 @@
         app:cardBackgroundColor="@color/colorSkyBlueDark"
         app:cardCornerRadius="20dp"
         app:cardElevation="10dp"
-        app:cardPreventCornerOverlap="true"
         app:cardUseCompatPadding="true"
         app:layout_constraintEnd_toEndOf="@id/cv_img_profile"
         app:layout_constraintStart_toStartOf="@+id/cv_img_profile"
@@ -100,11 +103,11 @@
                 android:paddingStart="5dp"
                 android:text=""
                 android:textColor="@color/colorWhite"
-                android:textSize="20sp"
+                android:textSize="17sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/ic_edit"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent" />
 
             <com.balysv.materialripple.MaterialRippleLayout
                 android:id="@+id/ic_edit"
@@ -131,4 +134,61 @@
 
     </androidx.cardview.widget.CardView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_change_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/colorSkyBlueDark"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="10dp"
+        app:cardUseCompatPadding="true"
+        app:layout_constraintEnd_toEndOf="@id/cv_edit_name"
+        app:layout_constraintStart_toStartOf="@+id/cv_edit_name"
+        app:layout_constraintTop_toBottomOf="@+id/cv_edit_name">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_change_password"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:paddingBottom="15dp"
+                android:paddingTop="15dp"
+                android:text="Change Password"
+                android:textColor="@color/colorWhite"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/ic_change"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <com.balysv.materialripple.MaterialRippleLayout
+                android:id="@+id/ic_change"
+                android:layout_width="60dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tv_change_password"
+                app:layout_constraintTop_toTopOf="parent"
+                app:mrl_rippleColor="@color/colorWhite"
+                app:mrl_rippleOverlay="false">
+
+                <ImageButton
+                    android:id="@+id/btn_change_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/transparent"
+                    android:src="@drawable/ic_edit" />
+
+            </com.balysv.materialripple.MaterialRippleLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

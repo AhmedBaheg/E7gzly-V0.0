@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.e7gzly.R;
+import com.example.e7gzly.dialog.ChangePasswordDialog;
 import com.example.e7gzly.dialog.EditDialog;
 import com.example.e7gzly.model.User;
 import com.example.e7gzly.utilities.Constants;
@@ -45,7 +46,9 @@ public class SettingsFragment extends Fragment {
     private View view;
     private TextView profile_Name, profile_Email;
     private CircleImageView img_Profile;
-    private ImageButton edit_name;
+    private ImageButton edit_name , btn_Change_Password;
+
+    private ChangePasswordDialog passwordDialog;
 
     private Uri uri;
     private String name, email, exist_img_url;
@@ -60,10 +63,10 @@ public class SettingsFragment extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_settings, container, false);
 
-        //Fire Base
+        //FireBase
         firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
-        userProfileRef = FirebaseStorage.getInstance().getReference().child("Profile Images");
+        userProfileRef = FirebaseStorage.getInstance().getReference("Profile Images");
 
         profile_Name = view.findViewById(R.id.tv_name_profile);
         profile_Email = view.findViewById(R.id.tv_email_profile);
@@ -103,13 +106,32 @@ public class SettingsFragment extends Fragment {
                         }
                         name = editDialog.ed_dialog_name.getText().toString();
                         saveInfoDB(exist_img_url , name , email);
+                        returnData();
                         editDialog.dismiss();
                     }
                 });
+
                 editDialog.show();
-                returnData();
             }
         });
+
+        btn_Change_Password = view.findViewById(R.id.btn_change_password);
+        btn_Change_Password.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                passwordDialog = new ChangePasswordDialog(getContext());
+                passwordDialog.show();
+
+                passwordDialog.btn_Save_Change.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        passwordDialog.changePassword();
+                    }
+                });
+
+            }
+        });
+
     }
 
     /**

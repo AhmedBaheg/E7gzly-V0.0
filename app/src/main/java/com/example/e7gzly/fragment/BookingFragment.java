@@ -27,6 +27,7 @@ import com.example.e7gzly.model.TicketModel;
 import com.example.e7gzly.model.TrainModel;
 import com.example.e7gzly.model.TripModel;
 import com.example.e7gzly.utilities.Constants;
+import com.example.e7gzly.utilities.Utils;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -72,6 +73,7 @@ public class BookingFragment extends Fragment {
 
     private DatabaseReference databaseReference;
 
+    private String date;
     private double price;
     private int seats_available;
     private int booked_seats = 0;
@@ -246,7 +248,7 @@ public class BookingFragment extends Fragment {
         datePickerDialog = new DatePickerDialog(getContext(), R.style.MyDatePickerDialogTheme, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                date_picker.setText(dayOfMonth + " - " + (month + 1) + " - " + year);
+                date_picker.setText(dayOfMonth + "-" + (month + 1) + "-" + year);
             }
         }, year, month, day);
 
@@ -274,12 +276,14 @@ public class BookingFragment extends Fragment {
                     .child("available_seats")
                     .setValue(available_seats);
             getNumberOfSeats();
+            generateRandomCodeAndSendDataToFragment();
+
         }
     }
 
     private void getNumberOfSeats() {
 
-        final String date = date_picker.getText().toString();
+        date = date_picker.getText().toString();
 
         if (TextUtils.isEmpty(date)) {
             layout.setVisibility(View.GONE);
@@ -311,9 +315,25 @@ public class BookingFragment extends Fragment {
                         } else {
                             seats_available = trainModel.getSeats();
 
+                            databaseReference.child("seats_available")
+                                    .child(date)
+                                    .child(tripModel.getTrip_id())
+                                    .child("available_seats")
+                                    .setValue(seats_available);
+
+                            ava_seats.setText(String.valueOf(seats_available));
+
                         }
                     } else {
                         seats_available = trainModel.getSeats();
+
+                        databaseReference.child("seats_available")
+                                .child(date)
+                                .child(tripModel.getTrip_id())
+                                .child("available_seats")
+                                .setValue(seats_available);
+
+                        ava_seats.setText(String.valueOf(seats_available));
 
                     }
                 }
@@ -328,6 +348,36 @@ public class BookingFragment extends Fragment {
         }
 
         getSeats();
+
+    }
+
+    private void generateRandomCodeAndSendDataToFragment() {
+
+        int numb_seats_passenger = Integer.parseInt(num_of_seats.getText().toString());
+        double total_price = numb_seats_passenger * price;
+
+        int start = 10000000;
+        int increment = 9999999;
+        int generate = (int) (start + (Math.random() * increment));
+        Log.println(Log.ASSERT, "GENERATE", String.valueOf(generate));
+
+        Fragment fragment = PayFragment.newInstance(
+                tripModel.getTrip_line(),
+                fromModel.getSt_name(),
+                toModel.getSt_name(),
+                Utils.CALCULATE_LEAVE_TIME(fromModel.getArrive_time()),
+                toModel.getArrive_time(),
+                numb_seats_passenger,
+                total_price,
+                trainModel.getTrain_class(),
+                date,
+                String.valueOf(generate)
+
+        );
+
+        if (getActivity() != null) {
+            ((Home) getActivity()).loadFragment(fragment);
+        }
 
     }
 
