@@ -21,7 +21,6 @@ import com.example.e7gzly.adapters.ResultAdapter;
 import com.example.e7gzly.model.StopStationsModel;
 import com.example.e7gzly.model.TrainModel;
 import com.example.e7gzly.model.TripModel;
-import com.example.e7gzly.utilities.Utils;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -50,10 +49,6 @@ public class ResultFragment extends Fragment {
     private String to;
     private String to_id;
     private String train_class;
-    private String train_line;
-    private String arrive;
-    private String leave;
-    private int seats;
 
     private RecyclerView result_rv;
     private ResultAdapter adapter;
@@ -268,16 +263,19 @@ public class ResultFragment extends Fragment {
             @Override
             public void onItemClick(View view, int position) {
                 BookingFragment fragment;
-                Toast.makeText(getContext(), "item " + position + " clicked", Toast.LENGTH_SHORT).show();
 
-                leave = Utils.CALCULATE_LEAVE_TIME(from_stations_list.get(position).getArrive_time());
-                arrive = to_stations_list.get(position).getArrive_time();
-                train_line = trip_list.get(position).getTrip_line();
-                train_class = train_list.get(position).getTrain_class();
-                seats = train_list.get(position).getSeats();
+//                String leave = Utils.CALCULATE_LEAVE_TIME(from_stations_list.get(position).getArrive_time());
+//                String arrive = to_stations_list.get(position).getArrive_time();
+//                String train_line = trip_list.get(position).getTrip_line();
+//                String train_class = train_list.get(position).getTrain_class();
+//                int seats = train_list.get(position).getSeats();
+//                String trip_id = trip_list.get(position).getTrip_id();
 
-
-                fragment = BookingFragment.newInstance(from, from_id, to, to_id, arrive, leave, train_class, train_line, seats);
+                TripModel tripModel = trip_list.get(position);
+                TrainModel trainModel = train_list.get(position);
+                StopStationsModel fromModel = from_stations_list.get(position);
+                StopStationsModel toModel = to_stations_list.get(position);
+                fragment = BookingFragment.newInstance(tripModel, trainModel, fromModel, toModel);
                 if (getActivity() != null) {
                     ((Home) getActivity()).loadFragment(fragment);
 

@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
+        android:minHeight="50dp"
         android:gravity="center"
         android:textColor="#000"
         android:textSize="20sp"
@@ -23,17 +24,19 @@
         android:id="@+id/liner_from_to"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
         android:orientation="horizontal"
         android:weightSum="2"
+        android:minHeight="50dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/line">
 
         <TextView
             android:id="@+id/from"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="@string/from"
             android:layout_weight="1"
             android:gravity="center"
             android:textColor="#000"
@@ -41,9 +44,9 @@
 
         <TextView
             android:id="@+id/to"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="to"
             android:layout_weight="1"
             android:gravity="center"
             android:textColor="#000"
@@ -55,7 +58,9 @@
         android:id="@+id/linear_leave_arrive"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
         android:orientation="horizontal"
+        android:minHeight="50dp"
         android:weightSum="2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -63,9 +68,8 @@
 
         <TextView
             android:id="@+id/leave"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
             android:textColor="#000"
@@ -73,9 +77,8 @@
 
         <TextView
             android:id="@+id/arrive"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
             android:textColor="#000"
@@ -83,42 +86,66 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_class"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:gravity="center"
-        android:textColor="#000"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/linear_leave_arrive" />
 
     <LinearLayout
         android:id="@+id/linear_price"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
         android:orientation="horizontal"
         android:weightSum="2"
+        android:minHeight="50dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_class">
+        app:layout_constraintTop_toBottomOf="@id/linear_leave_arrive">
 
-        <EditText
-            android:id="@+id/seats_booked"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:inputType="number"
-            android:layout_marginEnd="15dp"
+        <TextView
+            android:id="@+id/tv_class"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:hint="Enter Number Of Seats" />
+            android:gravity="center"
+            android:textColor="#000"
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/tv_price"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="#000"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:minHeight="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/linear_price">
+
+        <TextView
+            android:id="@+id/date_picker"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:drawableStart="@drawable/ic_date"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:drawableTint="@color/colorSkyBlueDark"
+            android:paddingStart="10dp"
+            android:textColor="#000"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/tv_ava_tickets"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
             android:textColor="#000"
@@ -126,25 +153,53 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/date_picker"
+
+    <LinearLayout
+        android:id="@+id/seats_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:drawableEnd="@drawable/ic_calendar"
         android:gravity="center"
-        android:paddingEnd="30dp"
-        android:textColor="#000"
-        android:textSize="20sp"
+        android:layout_marginTop="30dp"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/linear_price" />
+        app:layout_constraintTop_toBottomOf="@+id/ll1">
+
+        <ImageButton
+            android:id="@+id/add_btn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/circle_btn"
+            android:src="@drawable/ic_add_circle_outline"
+            android:tint="@color/colorWhite" />
+
+        <TextView
+            android:id="@+id/seats_booked"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:gravity="center"
+            android:text="0"
+            android:textColor="#000"
+            android:textSize="20sp" />
+
+        <ImageButton
+            android:id="@+id/remove_btn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/circle_btn"
+            android:src="@drawable/ic_remove_circle_outline"
+            android:tint="@color/colorWhite" />
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/btn_booking"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="50dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
         android:background="@drawable/btn_sign_up_now"
         android:text="Booking"
         android:textAllCaps="false"
@@ -152,7 +207,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/date_picker" />
+        app:layout_constraintTop_toBottomOf="@+id/seats_layout" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

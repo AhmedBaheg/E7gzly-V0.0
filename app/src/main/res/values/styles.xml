@@ -79,7 +79,7 @@
     </style>
 
     <style name="HintTextEmailForgot_Sign_Up" parent="TextAppearance.Design.Hint">
-        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textColor">@color/colorSkyBlueDark</item>
         <item name="android:textSize">16sp</item>
     </style>
 

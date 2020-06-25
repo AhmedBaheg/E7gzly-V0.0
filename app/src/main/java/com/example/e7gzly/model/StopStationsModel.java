@@ -1,6 +1,8 @@
 package com.example.e7gzly.model;
 
-public class StopStationsModel {
+import java.io.Serializable;
+
+public class StopStationsModel implements Serializable {
     private String arrive_time;
     private String st_id;
     private String st_name;

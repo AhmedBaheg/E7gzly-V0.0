@@ -1,6 +1,8 @@
 package com.example.e7gzly.model;
 
-public class TrainModel {
+import java.io.Serializable;
+
+public class TrainModel implements Serializable {
 
     private String from;
     private int seats;

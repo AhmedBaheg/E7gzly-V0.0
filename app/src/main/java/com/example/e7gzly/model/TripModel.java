@@ -1,8 +1,9 @@
 package com.example.e7gzly.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class TripModel {
+public class TripModel implements Serializable {
     private List<StopStationsModel> stop_stations;
     private String train_id;
     private String trip_id;
