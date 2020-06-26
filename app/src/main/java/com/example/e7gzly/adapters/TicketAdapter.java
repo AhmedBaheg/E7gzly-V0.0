@@ -36,6 +36,7 @@ public class TicketAdapter extends FirebaseRecyclerAdapter<PassengerInfo, Ticket
         holder.arrive.setText(model.getArrive());
         holder.class_ticket.setText(model.getTrain_class());
         holder.date.setText(model.getDate());
+        holder.code.setText(model.getCode());
 
     }
 
@@ -48,38 +49,26 @@ public class TicketAdapter extends FirebaseRecyclerAdapter<PassengerInfo, Ticket
 
     class TicketHolder extends RecyclerView.ViewHolder {
 
-        TextView direction;
         TextView line;
-        TextView tv_from;
         TextView from;
-        TextView tv_to;
         TextView to;
-        TextView tv_leave;
         TextView leave;
-        TextView tv_arrive;
         TextView arrive;
-        TextView tv_class;
         TextView class_ticket;
-        TextView tv_date;
         TextView date;
+        TextView code;
 
         public TicketHolder(@NonNull View itemView) {
             super(itemView);
 
-            direction = itemView.findViewById(R.id.tv_direction);
             line = itemView.findViewById(R.id.line_ticket);
-            tv_from = itemView.findViewById(R.id.tv_from);
             from = itemView.findViewById(R.id.from_ticket);
-            tv_to = itemView.findViewById(R.id.tv_to);
             to = itemView.findViewById(R.id.to_ticket);
-            tv_leave = itemView.findViewById(R.id.tv_leave);
             leave = itemView.findViewById(R.id.leave_ticket);
-            tv_arrive = itemView.findViewById(R.id.tv_arrive);
             arrive = itemView.findViewById(R.id.arrive_ticket);
-            tv_class = itemView.findViewById(R.id.tv_class);
             class_ticket = itemView.findViewById(R.id.class_ticket);
-            tv_date = itemView.findViewById(R.id.tv_date);
             date = itemView.findViewById(R.id.date_ticket);
+            code = itemView.findViewById(R.id.fawry_code);
 
         }
     }

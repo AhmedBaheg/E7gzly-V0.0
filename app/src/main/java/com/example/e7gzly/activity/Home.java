@@ -114,6 +114,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
         fragmentTransaction.replace(R.id.container, Fragment);
         fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.setCustomAnimations(R.anim.slide_in_right,R.anim.slide_in_left);
 
         // Commit the transaction
         fragmentTransaction.commit();

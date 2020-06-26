@@ -22,6 +22,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.e7gzly.R;
 import com.example.e7gzly.activity.Home;
+import com.example.e7gzly.model.PassengerInfo;
 import com.example.e7gzly.model.StopStationsModel;
 import com.example.e7gzly.model.TicketModel;
 import com.example.e7gzly.model.TrainModel;
@@ -361,19 +362,7 @@ public class BookingFragment extends Fragment {
         int generate = (int) (start + (Math.random() * increment));
         Log.println(Log.ASSERT, "GENERATE", String.valueOf(generate));
 
-        Fragment fragment = PayFragment.newInstance(
-                tripModel.getTrip_line(),
-                fromModel.getSt_name(),
-                toModel.getSt_name(),
-                Utils.CALCULATE_LEAVE_TIME(fromModel.getArrive_time()),
-                toModel.getArrive_time(),
-                numb_seats_passenger,
-                total_price,
-                trainModel.getTrain_class(),
-                date,
-                String.valueOf(generate)
-
-        );
+        Fragment fragment = PayFragment.newInstance(new PassengerInfo(tripModel.getTrip_line(),fromModel.getSt_name(),toModel.getSt_name(),CALCULATE_LEAVE_TIME(fromModel.getArrive_time()), toModel.getArrive_time(), trainModel.getTrain_class(),date,numb_seats_passenger, total_price,  String.valueOf(generate)));
 
         if (getActivity() != null) {
             ((Home) getActivity()).loadFragment(fragment);

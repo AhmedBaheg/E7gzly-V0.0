@@ -33,26 +33,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        checkUser();
-    }
-
-    private void checkUser() {
-        if (CheckConnection.isConnected(this)) {
-            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-            if (user != null) {
-                startActivity(new Intent(this, Home.class));
-            }
-        } else {
-            ErrorConnectionDialog dialog = new ErrorConnectionDialog(this);
-            dialog.show();
-            dialog.checkConnection();
-        }
-
-    }
-
-    @Override
     public void onClick(View v) {
         if (CheckConnection.isConnected(this)) {
             switch (v.getId()) {
