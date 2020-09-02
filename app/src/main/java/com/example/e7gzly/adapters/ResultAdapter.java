@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -51,12 +52,10 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ResultHold
         StopStationsModel to = to_stations_list.get(position);
 
         if (tripModel != null && trainModel != null && from != null && to != null) {
-            holder.line.setText("Line : " + tripModel.getTrip_line());
-            holder.train_class.setText("Class : " + trainModel.getTrain_class());
-            holder.from.setText("From : " + from.getSt_name());
-            holder.to.setText("To : " + to.getSt_name());
-            holder.leave.setText("Leave At : " + CALCULATE_LEAVE_TIME(from.getArrive_time()));
-            holder.arrive.setText("Arrive At : " + to.getArrive_time());
+            holder.trip.setText(tripModel.getTrip_id());
+            holder.train_class.setText(trainModel.getTrain_class());
+            holder.leave.setText(CALCULATE_LEAVE_TIME(from.getArrive_time()));
+            holder.arrive.setText(to.getArrive_time());
 
         }
 
@@ -76,32 +75,38 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ResultHold
         void onItemClick(View view, int position);
     }
 
-    public class ResultHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public TextView line;
+    public class ResultHolder extends RecyclerView.ViewHolder{
+        public TextView trip;
         public TextView from;
         public TextView to;
         public TextView leave;
         public TextView arrive;
         public TextView train_class;
+        public Button btn_book_now;
         public OnItemClickListener listener;
 
-        public ResultHolder(@NonNull View itemView, OnItemClickListener listener) {
+        public ResultHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
-            itemView.setOnClickListener(this);
-            line = itemView.findViewById(R.id.tv_line);
-            from = itemView.findViewById(R.id.tv_from);
-            to = itemView.findViewById(R.id.tv_to);
-            leave = itemView.findViewById(R.id.tv_leave_time);
-            arrive = itemView.findViewById(R.id.tv_arrive_time);
-            train_class = itemView.findViewById(R.id.tv_train_class);
+//            itemView.setOnClickListener(this);
+            trip = itemView.findViewById(R.id.tv_trip_num);
+            leave = itemView.findViewById(R.id.time_leave);
+            arrive = itemView.findViewById(R.id.time_arrive);
+            train_class = itemView.findViewById(R.id.tv_class_item);
+            btn_book_now = itemView.findViewById(R.id.btn_book_now);
+            btn_book_now.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemClick(v , getAdapterPosition());
+                }
+            });
             this.listener = listener;
         }
-
-        @Override
-        public void onClick(View v) {
-
-            listener.onItemClick(v, getAdapterPosition());
-
-        }
+//
+//        @Override
+//        public void onClick(View v) {
+//
+//            listener.onItemClick(v, getAdapterPosition());
+//
+//        }
     }
 }

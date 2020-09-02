@@ -49,14 +49,14 @@ public class TicketAdapter extends FirebaseRecyclerAdapter<PassengerInfo, Ticket
 
     class TicketHolder extends RecyclerView.ViewHolder {
 
-        TextView line;
-        TextView from;
-        TextView to;
-        TextView leave;
-        TextView arrive;
-        TextView class_ticket;
-        TextView date;
-        TextView code;
+        private TextView line;
+        private TextView from;
+        private TextView to;
+        private TextView leave;
+        private TextView arrive;
+        private TextView class_ticket;
+        private TextView date;
+        private TextView code;
 
         public TicketHolder(@NonNull View itemView) {
             super(itemView);

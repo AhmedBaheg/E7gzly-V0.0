@@ -87,4 +87,8 @@
         <item name="android:colorAccent" tools:targetApi="lollipop">@color/colorSkyBlueDark</item>
     </style>
 
+    <style name="BlueCheck">
+        <item name="colorAccent">@color/colorSkyBlueDark</item>
+    </style>
+
 </resources>

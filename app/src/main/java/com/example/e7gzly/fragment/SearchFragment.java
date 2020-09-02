@@ -77,7 +77,8 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
                 if (isChecked) {
                     class_spinner.setEnabled(true);
                     class_spinner.setOnItemSelectedListener(SearchFragment.this);
-
+                }else {
+                    class_spinner.setEnabled(false);
                 }
             }
         });
@@ -167,8 +168,11 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
             fragment = ResultFragment.newInstance(selected_from, selected_from_id, selected_to, selected_to_id, selected_class);
         }
         if (getActivity() != null) {
-            ((Home) getActivity()).loadFragment(fragment);
+            ((Home) getActivity()).loadFragment(fragment ,  selected_from + " : " + selected_to);
         }
 
     }
+
+
+
 }

@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +22,7 @@ import com.example.e7gzly.dialog.ChangePasswordDialog;
 import com.example.e7gzly.dialog.EditDialog;
 import com.example.e7gzly.model.User;
 import com.example.e7gzly.utilities.Constants;
+import com.github.ybq.android.spinkit.style.Circle;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -52,6 +54,7 @@ public class SettingsFragment extends Fragment {
 
     private Uri uri;
     private String name, email, exist_img_url;
+    private ProgressBar progressBar;
     // Fire Base
 
     DatabaseReference databaseReference;
@@ -67,6 +70,11 @@ public class SettingsFragment extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
         userProfileRef = FirebaseStorage.getInstance().getReference("Profile Images");
+
+        progressBar = view.findViewById(R.id.progress);
+        Circle circle = new Circle();
+        progressBar.setIndeterminateDrawable(circle);
+        progressBar.setVisibility(View.GONE);
 
         profile_Name = view.findViewById(R.id.tv_name_profile);
         profile_Email = view.findViewById(R.id.tv_email_profile);
@@ -97,6 +105,7 @@ public class SettingsFragment extends Fragment {
             public void onClick(View v) {
                 final EditDialog editDialog = new EditDialog(getContext());
                 editDialog.ed_dialog_name.setText(name);
+                editDialog.ed_dialog_name.setSelection(editDialog.ed_dialog_name.getText().length());
 
                 editDialog.btn_save.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -242,13 +251,14 @@ public class SettingsFragment extends Fragment {
         UploadTask uploadTask;
 
         final StorageReference rf = userProfileRef.child("/Profile Images" + add_pic.getLastPathSegment());
-
+        progressBar.setVisibility(View.VISIBLE);
         uploadTask = rf.putFile(add_pic);
 
         Task<Uri> uriTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
             @Override
             public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
                 if (!task.isSuccessful()) {
+                    progressBar.setVisibility(View.INVISIBLE);
                     throw task.getException();
                 }
                 return rf.getDownloadUrl();
@@ -258,7 +268,7 @@ public class SettingsFragment extends Fragment {
             public void onComplete(@NonNull Task<Uri> task) {
                 Uri downloadUri = task.getResult();
                 String user_Pic = downloadUri.toString();
-
+                progressBar.setVisibility(View.INVISIBLE);
                 saveInfoDB(user_Pic, name, email);
                 returnData();
 
@@ -266,6 +276,7 @@ public class SettingsFragment extends Fragment {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
+                progressBar.setVisibility(View.INVISIBLE);
                 Toast.makeText(getContext(), "Can't Upload Photo", Toast.LENGTH_SHORT).show();
             }
         });

@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -44,7 +43,7 @@ public class StationAdapter extends ArrayAdapter<StationsModel> {
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.statiom_spinner_raw, parent, false);
         }
-        TextView id = convertView.findViewById(R.id.tv_station_id);
+//        TextView id = convertView.findViewById(R.id.tv_station_id);
         TextView textViewName = convertView.findViewById(R.id.tv_station_name);
 
         StationsModel stations = getItem(position);
@@ -53,20 +52,20 @@ public class StationAdapter extends ArrayAdapter<StationsModel> {
             if (position != pos) {
                 if (stations != null) {
 
-                    id.setVisibility(View.VISIBLE);
+//                    id.setVisibility(View.VISIBLE);
                     textViewName.setVisibility(View.VISIBLE);
-                    id.setText(String.valueOf(stations.getSt_id()));
+//                    id.setText(String.valueOf(stations.getSt_id()));
                     textViewName.setText(stations.getSt_name());
                 }
 
             } else {
-                id.setVisibility(View.GONE);
+//                id.setVisibility(View.GONE);
                 textViewName.setVisibility(View.GONE);
 
             }
         } else {
             if (stations != null) {
-                id.setText(String.valueOf(stations.getSt_id()));
+//                id.setText(String.valueOf(stations.getSt_id()));
                 textViewName.setText(stations.getSt_name());
             }
         }

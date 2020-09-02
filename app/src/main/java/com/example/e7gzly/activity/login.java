@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -13,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.e7gzly.R;
 import com.example.e7gzly.dialog.ErrorConnectionDialog;
 import com.example.e7gzly.model.CheckConnection;
+import com.github.ybq.android.spinkit.style.Circle;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
@@ -32,12 +34,19 @@ public class login extends AppCompatActivity implements View.OnClickListener {
 
     FirebaseAuth firebaseAuth;
 
+    private ProgressBar progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
         firebaseAuth = FirebaseAuth.getInstance();
+
+        progressBar = findViewById(R.id.progress);
+        Circle circle = new Circle();
+        progressBar.setIndeterminateDrawable(circle);
+        progressBar.setVisibility(View.GONE);
 
         ed_Email_Login = findViewById(R.id.ed_email_login);
         ed_Password_Login = findViewById(R.id.ed_Password_login);
@@ -50,16 +59,23 @@ public class login extends AppCompatActivity implements View.OnClickListener {
 
 
     private void UserLogin() {
+
+        progressBar.setVisibility(View.VISIBLE);
+
         String email = ed_Email_Login.getEditText().getText().toString();
         String password = ed_Password_Login.getEditText().getText().toString();
 
         if (CheckConnection.isConnected(this)) {
             if (!validationEmail()) {
+                progressBar.setVisibility(View.GONE);
                 ed_Email_Login.requestFocus();
 
-            } else if (!validationPassword()) {
+            }
+            else if (!validationPassword()) {
+                progressBar.setVisibility(View.GONE);
                 ed_Password_Login.requestFocus();
-            } else {
+            }
+            else {
                 firebaseAuth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                             @Override
@@ -67,11 +83,14 @@ public class login extends AppCompatActivity implements View.OnClickListener {
                                 if (task.isSuccessful()) {
                                     // Sign in success, update UI with the signed-in user's information
                                     if (firebaseAuth.getCurrentUser().isEmailVerified()) {
+                                        progressBar.setVisibility(View.GONE);
                                         startActivity(new Intent(login.this, Home.class));
                                     } else {
+                                        progressBar.setVisibility(View.GONE);
                                         Toast.makeText(login.this, "Please Check Your Email And Verify Your Account", Toast.LENGTH_LONG).show();
                                     }
                                 } else {
+                                    progressBar.setVisibility(View.GONE);
                                     // If sign in fails, display a message to the user.
                                     Toast.makeText(login.this, "Email Or Password Incorrect", Toast.LENGTH_SHORT).show();
                                 }
@@ -82,11 +101,12 @@ public class login extends AppCompatActivity implements View.OnClickListener {
 
             }
         } else {
+            progressBar.setVisibility(View.GONE);
             ErrorConnectionDialog dialog = new ErrorConnectionDialog(this);
             dialog.show();
             dialog.checkConnection();
         }
-        }
+    }
 
 
     private boolean validationEmail() {

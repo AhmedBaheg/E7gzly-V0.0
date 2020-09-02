@@ -61,7 +61,7 @@ public class PayFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_pay, container, false);
 
-        ((Home) getActivity()).setActionBarTitle("Paying");
+//        ((Home) getActivity()).setActionBarTitle("Paying");
 
         databaseReference = FirebaseDatabase.getInstance().getReference();
         databaseReference.keepSynced(true);
@@ -91,7 +91,7 @@ public class PayFragment extends Fragment {
         leave_pay.setText(info.getLeave());
         arrive_pay.setText(info.getArrive());
         seats_pay.setText(String.valueOf(info.getPassenger_seats()));
-        price_pay.setText(info.getPrice() + " L.E");
+        price_pay.setText(info.getPrice() + " ُEGP");
         class_pay.setText(info.getTrain_class());
         date_pay.setText(info.getDate());
         code_pay.setText(info.getCode());
@@ -116,7 +116,7 @@ public class PayFragment extends Fragment {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()){
-                    ((Home) getActivity()).loadFragment(new SearchFragment());
+                    ((Home) getActivity()).loadFragment(new SearchFragment() , "Search");
                 }
             }
         });

@@ -28,7 +28,6 @@ import com.example.e7gzly.model.TicketModel;
 import com.example.e7gzly.model.TrainModel;
 import com.example.e7gzly.model.TripModel;
 import com.example.e7gzly.utilities.Constants;
-import com.example.e7gzly.utilities.Utils;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -78,7 +77,6 @@ public class BookingFragment extends Fragment {
     private double price;
     private int seats_available;
     private int booked_seats = 0;
-    private boolean isBookedState = false;
 
     public static BookingFragment newInstance(TripModel tripModel, TrainModel trainModel, StopStationsModel fromModel, StopStationsModel toModel) {
         BookingFragment fragment = new BookingFragment();
@@ -108,7 +106,7 @@ public class BookingFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_booking, container, false);
 
-        ((Home) getActivity()).setActionBarTitle("Booking");
+//        ((Home) getActivity()).setActionBarTitle("Booking");
 
         databaseReference = FirebaseDatabase.getInstance().getReference();
         databaseReference.keepSynced(true);
@@ -134,12 +132,12 @@ public class BookingFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        line.setText("Line direction : " + tripModel.getTrip_line());
-        tv_class.setText("Train class : " + trainModel.getTrain_class());
-        tv_from.setText("From : " + fromModel.getSt_name());
-        tv_to.setText("To : " + toModel.getSt_name());
-        tv_arrive.setText("Arrive at : " + toModel.getArrive_time());
-        tv_leave.setText("Leave at : " + CALCULATE_LEAVE_TIME(fromModel.getArrive_time()));
+        line.setText(tripModel.getTrip_line());
+        tv_class.setText(trainModel.getTrain_class());
+        tv_from.setText(fromModel.getSt_name());
+        tv_to.setText(toModel.getSt_name());
+        tv_arrive.setText(toModel.getArrive_time());
+        tv_leave.setText(CALCULATE_LEAVE_TIME(fromModel.getArrive_time()));
 
 
         date_picker.setOnClickListener(new View.OnClickListener() {
@@ -222,7 +220,7 @@ public class BookingFragment extends Fragment {
                         if (toModel.getSt_id().equalsIgnoreCase(ticketModel.getStation_1()) || toModel.getSt_id().equalsIgnoreCase(ticketModel.getStation_2())) {
 
                             price = ticketModel.getPrice();
-                            tv_price.setText(price + "  L.E");
+                            tv_price.setText(price + "  EGP");
 
                         }
                     }
@@ -362,10 +360,18 @@ public class BookingFragment extends Fragment {
         int generate = (int) (start + (Math.random() * increment));
         Log.println(Log.ASSERT, "GENERATE", String.valueOf(generate));
 
-        Fragment fragment = PayFragment.newInstance(new PassengerInfo(tripModel.getTrip_line(),fromModel.getSt_name(),toModel.getSt_name(),CALCULATE_LEAVE_TIME(fromModel.getArrive_time()), toModel.getArrive_time(), trainModel.getTrain_class(),date,numb_seats_passenger, total_price,  String.valueOf(generate)));
+        Fragment fragment = PayFragment.newInstance(new PassengerInfo(tripModel.getTrip_line(),
+                fromModel.getSt_name(),
+                toModel.getSt_name(),
+                CALCULATE_LEAVE_TIME(fromModel.getArrive_time()),
+                toModel.getArrive_time(), trainModel.getTrain_class(),
+                date,
+                numb_seats_passenger,
+                total_price,
+                String.valueOf(generate)));
 
         if (getActivity() != null) {
-            ((Home) getActivity()).loadFragment(fragment);
+            ((Home) getActivity()).loadFragment(fragment , "Paying");
         }
 
     }

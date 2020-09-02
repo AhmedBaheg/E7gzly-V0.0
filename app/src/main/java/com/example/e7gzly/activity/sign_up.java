@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,6 +16,7 @@ import com.example.e7gzly.dialog.ErrorConnectionDialog;
 import com.example.e7gzly.model.CheckConnection;
 import com.example.e7gzly.model.User;
 import com.example.e7gzly.utilities.Constants;
+import com.github.ybq.android.spinkit.style.Circle;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
@@ -29,14 +30,15 @@ import java.util.regex.Pattern;
 
 public class sign_up extends AppCompatActivity implements View.OnClickListener {
 
-    Button btn_Sign_Up_Now;
-    TextView tv_Login;
-    TextInputLayout ed_First_Name, ed_Last_Name, ed_Email, ed_Password, ed_Confirm_Password;
-    FirebaseDatabase firebaseDatabase;
-    DatabaseReference databaseReference;
+    private Button btn_Sign_Up_Now;
+    private TextView tv_Login;
+    private TextInputLayout ed_First_Name, ed_Last_Name, ed_Email, ed_Password, ed_Confirm_Password;
+
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference databaseReference;
     private FirebaseAuth firebaseAuth;
 
-    ImageView image;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +48,11 @@ public class sign_up extends AppCompatActivity implements View.OnClickListener {
         databaseReference = FirebaseDatabase.getInstance().getReference("User");
         firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
+
+        progressBar = findViewById(R.id.progress);
+        Circle circle = new Circle();
+        progressBar.setIndeterminateDrawable(circle);
+        progressBar.setVisibility(View.GONE);
 
         ed_First_Name = findViewById(R.id.ed_First_Name);
         ed_Last_Name = findViewById(R.id.ed_Last_Name);
@@ -63,6 +70,8 @@ public class sign_up extends AppCompatActivity implements View.OnClickListener {
 
     private void userSignUp() {
 
+        progressBar.setVisibility(View.VISIBLE);
+
         final String firstName = ed_First_Name.getEditText().getText().toString().trim();
         final String lastName = ed_Last_Name.getEditText().getText().toString().trim();
         final String fullName = firstName + " " + lastName;
@@ -70,22 +79,25 @@ public class sign_up extends AppCompatActivity implements View.OnClickListener {
         final String password = ed_Password.getEditText().getText().toString().trim();
 
         if (!validationFirstName()) {
+            progressBar.setVisibility(View.GONE);
             ed_First_Name.requestFocus();
         } else if (!validationLastName()) {
+            progressBar.setVisibility(View.GONE);
             ed_Last_Name.requestFocus();
         } else if (!validationEmail()) {
+            progressBar.setVisibility(View.GONE);
             ed_Email.requestFocus();
         } else if (!validationPassword()) {
+            progressBar.setVisibility(View.GONE);
             ed_Password.requestFocus();
         } else if (!validationConfirmPassword()) {
+            progressBar.setVisibility(View.GONE);
             ed_Confirm_Password.requestFocus();
         } else {
-
             firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this,
                     new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
-
                             if (task.isSuccessful()) {
                                 firebaseAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
@@ -98,21 +110,24 @@ public class sign_up extends AppCompatActivity implements View.OnClickListener {
                                                     .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {
+                                                    progressBar.setVisibility(View.GONE);
                                                     Toast.makeText(sign_up.this, "Please Verification Your Account",
                                                             Toast.LENGTH_LONG).show();
                                                     startActivity(new Intent(sign_up.this, login.class));
+                                                    finish();
                                                 }
                                             });
 
                                         } else {
+                                            progressBar.setVisibility(View.GONE);
                                             String message = task.getException().getMessage();
-                                            Toast.makeText(sign_up.this, "Error Occurred " + message,
-                                                    Toast.LENGTH_LONG).show();
+                                            Toast.makeText(sign_up.this, "Error Occurred " + message, Toast.LENGTH_LONG).show();
                                         }
                                     }
                                 });
 
                             } else {
+                                progressBar.setVisibility(View.GONE);
                                 Toast.makeText(sign_up.this, "Your Email Already Exists", Toast.LENGTH_SHORT).show();
                             }
 
@@ -181,8 +196,7 @@ public class sign_up extends AppCompatActivity implements View.OnClickListener {
         } else if (!input_ConfirmSignUpPassword.equals(input_SignUpPassword)) {
             ed_Confirm_Password.setError("The Two Password Not Equals");
             return false;
-        }
-        else {
+        } else {
             ed_Confirm_Password.setError(null);
             return true;
         }
@@ -197,18 +211,18 @@ public class sign_up extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        if (CheckConnection.isConnected(this)){
+        if (CheckConnection.isConnected(this)) {
 
-            switch (v.getId()){
-                case R.id.btn_sign_up_now :
+            switch (v.getId()) {
+                case R.id.btn_sign_up_now:
                     userSignUp();
                     break;
-                case R.id.tv_login :
-                    startActivity(new Intent(sign_up.this , login.class));
+                case R.id.tv_login:
+                    startActivity(new Intent(sign_up.this, login.class));
                     break;
             }
 
-        }else {
+        } else {
             ErrorConnectionDialog dialog = new ErrorConnectionDialog(this);
             dialog.show();
             dialog.checkConnection();

@@ -98,22 +98,21 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        loadFragment(new SearchFragment());
-        title.setText("Search");
-
+        loadFragment(new SearchFragment() , "Search");
 
     }
 
-    public void setActionBarTitle(String title) {
+    public void setActionBarTitle() {
+
+    }
+
+    public void loadFragment(Fragment Fragment , String title) {
+
         this.title.setText(title);
-    }
-
-    public void loadFragment(Fragment Fragment) {
 
         fragmentTransaction = fragmentManager.beginTransaction();
 
         fragmentTransaction.replace(R.id.container, Fragment);
-        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.setCustomAnimations(R.anim.slide_in_right,R.anim.slide_in_left);
 
         // Commit the transaction
@@ -156,16 +155,13 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
             switch (menuItem.getItemId()) {
                 case R.id.get_ticket:
-                    loadFragment(new SearchFragment());
-                    title.setText("Search");
+                    loadFragment(new SearchFragment() , "Search");
                     break;
                 case R.id.ticket:
-                    loadFragment(new MyTicketFragment());
-                    title.setText("My Tickets");
+                    loadFragment(new MyTicketFragment() , "My Tickets");
                     break;
                 case R.id.settings:
-                    loadFragment(new SettingsFragment());
-                    title.setText("Settings");
+                    loadFragment(new SettingsFragment() , "Settings");
                     break;
                 case R.id.logout:
                     FirebaseAuth.getInstance().signOut();
@@ -206,6 +202,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         } else {
             moveTaskToBack(true);
         }
+
     }
 
 }

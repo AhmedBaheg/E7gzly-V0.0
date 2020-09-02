@@ -112,7 +112,7 @@ public class ResultFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ((Home) getActivity()).setActionBarTitle("Result");
+//        ((Home) getActivity()).setActionBarTitle("Result");
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         result_rv.setHasFixedSize(true);
@@ -277,7 +277,7 @@ public class ResultFragment extends Fragment {
                 StopStationsModel toModel = to_stations_list.get(position);
                 fragment = BookingFragment.newInstance(tripModel, trainModel, fromModel, toModel);
                 if (getActivity() != null) {
-                    ((Home) getActivity()).loadFragment(fragment);
+                    ((Home) getActivity()).loadFragment(fragment , "Booking");
 
                 }
             }

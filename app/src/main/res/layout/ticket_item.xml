@@ -35,7 +35,7 @@
                 android:gravity="left|center"
                 android:text="Line direction : "
                 android:textColor="@color/colorWhite"
-                android:textSize="17sp"
+                android:textSize="15sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -45,7 +45,7 @@
                 android:layout_weight="2"
                 android:gravity="left|center"
                 android:textColor="@color/colorWhite"
-                android:textSize="17sp" />
+                android:textSize="15sp" />
 
         </LinearLayout>
         <LinearLayout
@@ -64,7 +64,7 @@
                 android:gravity="left|center"
                 android:text="FAWRY Code : "
                 android:textColor="@color/colorWhite"
-                android:textSize="17sp"
+                android:textSize="15sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -74,7 +74,7 @@
                 android:layout_weight="2"
                 android:gravity="left|center"
                 android:textColor="@color/colorWhite"
-                android:textSize="17sp" />
+                android:textSize="15sp" />
 
         </LinearLayout>
 
@@ -93,7 +93,7 @@
                 android:gravity="left|center"
                 android:text="From : "
                 android:textColor="@color/colorWhite"
-                android:textSize="17sp"
+                android:textSize="15sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -103,7 +103,7 @@
                 android:layout_weight="2"
                 android:gravity="left|center"
                 android:textColor="@color/colorWhite"
-                android:textSize="17sp" />
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/tv_to"
@@ -113,7 +113,7 @@
                 android:gravity="left|center"
                 android:text="To : "
                 android:textColor="@color/colorWhite"
-                android:textSize="17sp"
+                android:textSize="15sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -123,7 +123,7 @@
                 android:layout_weight="2"
                 android:gravity="left|center"
                 android:textColor="@color/colorWhite"
-                android:textSize="17sp" />
+                android:textSize="15sp" />
 
         </LinearLayout>
 
@@ -142,7 +142,7 @@
                 android:gravity="left|center"
                 android:text="Leave : "
                 android:textColor="@color/colorWhite"
-                android:textSize="17sp"
+                android:textSize="15sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -152,7 +152,7 @@
                 android:layout_weight="2"
                 android:gravity="left|center"
                 android:textColor="@color/colorWhite"
-                android:textSize="17sp" />
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/tv_arrive"
@@ -162,7 +162,7 @@
                 android:gravity="left|center"
                 android:text="Arrive : "
                 android:textColor="@color/colorWhite"
-                android:textSize="17sp"
+                android:textSize="15sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -172,7 +172,7 @@
                 android:layout_weight="2"
                 android:gravity="left|center"
                 android:textColor="@color/colorWhite"
-                android:textSize="17sp" />
+                android:textSize="15sp" />
 
         </LinearLayout>
 
@@ -191,7 +191,7 @@
                 android:gravity="left|center"
                 android:text="Class : "
                 android:textColor="@color/colorWhite"
-                android:textSize="17sp"
+                android:textSize="15sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -201,7 +201,7 @@
                 android:layout_weight="2"
                 android:gravity="left|center"
                 android:textColor="@color/colorWhite"
-                android:textSize="17sp" />
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/tv_date"
@@ -211,7 +211,7 @@
                 android:gravity="left|center"
                 android:text="Date : "
                 android:textColor="@color/colorWhite"
-                android:textSize="17sp"
+                android:textSize="15sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -221,7 +221,7 @@
                 android:layout_weight="2"
                 android:gravity="left|center"
                 android:textColor="@color/colorWhite"
-                android:textSize="17sp" />
+                android:textSize="15sp" />
 
         </LinearLayout>
 

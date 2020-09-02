@@ -5,7 +5,7 @@
     <string name="closeNavDrawer">Navigation Drawer Close</string>
 
     <string name="trip">Trip</string>
-    <string name="from">From</string>
+    <string name="from">From :</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="new_password">New Password</string>
     <string name="current_password">Current Password</string>
@@ -13,5 +13,19 @@
     <string name="save">Save</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="todo">TODO</string>
+    <string name="welcome">Welcome</string>
+    <string name="i_wish_you_enjoy_with_e7gzly">I wish you enjoy with E7gzly</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="or">OR</string>
+    <string name="login">Login</string>
+    <string name="create_account">Create Account</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="email_address">Email Address</string>
+    <string name="password">Password</string>
+    <string name="already_have_an_account">Already have an account ?</string>
+    <string name="save_time_effort_and_money_with_e7gzly">Save time, Effort and money with E7gzly</string>
+    <string name="we_ll_send_you_an_e_mail_you_can_use_it_to_log_in">We\'ll send you an e-mail you can use it to log in.</string>
 
 </resources>

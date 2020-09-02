@@ -3,88 +3,84 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:elevation="6dp"
+    app:cardBackgroundColor="@android:color/white"
     app:cardCornerRadius="5dp"
-    app:cardBackgroundColor="#00C8FF"
+    app:cardElevation="6dp"
     app:cardPreventCornerOverlap="true"
     app:cardUseCompatPadding="true"
     app:contentPadding="8dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/tv_line"
+        <LinearLayout
+            android:id="@+id/item_linear"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:weightSum="4">
+
+            <TextView
+                android:id="@+id/tv_trip_num"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="1001"
+                android:gravity="center"
+                android:textColor="@android:color/black"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/time_leave"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="19:30"
+                android:gravity="center"
+                android:textColor="@android:color/black"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/time_arrive"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="22:30"
+                android:gravity="center"
+                android:textColor="@android:color/black"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/tv_class_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="VIP"
+                android:gravity="center"
+                android:textColor="@android:color/black"
+                android:textSize="15sp" />
+
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_book_now"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="25dp"
-            android:text="Line station - station"
-            android:textSize="16sp"
-            android:textColor="@color/colorWhite"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:background="@drawable/btn_sign_up_now"
+            android:text="Book Now"
+            android:layout_marginTop="5dp"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/item_linear"
+            app:layout_constraintStart_toStartOf="@+id/item_linear"
+            app:layout_constraintTop_toBottomOf="@+id/item_linear" />
 
-        <TextView
-            android:id="@+id/tv_from"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:minHeight="25dp"
-            android:text="From : "
-            android:textSize="16sp"
-            android:textColor="@color/colorWhite"
-            app:layout_constraintStart_toStartOf="@id/tv_line"
-            app:layout_constraintEnd_toStartOf="@id/tv_to"
-            app:layout_constraintTop_toBottomOf="@id/tv_line" />
-
-        <TextView
-            android:id="@+id/tv_to"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:minHeight="25dp"
-            android:text="To : "
-            android:textSize="16sp"
-            android:textColor="@color/colorWhite"
-            app:layout_constraintStart_toEndOf="@id/tv_from"
-            app:layout_constraintEnd_toEndOf="@id/tv_line"
-            app:layout_constraintTop_toBottomOf="@id/tv_line" />
-
-        <TextView
-            android:id="@+id/tv_arrive_time"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:minHeight="25dp"
-            android:text="Arrive At : "
-            android:textColor="@color/colorWhite"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="@id/tv_to"
-            app:layout_constraintStart_toEndOf="@id/tv_leave_time"
-            app:layout_constraintTop_toBottomOf="@id/tv_to" />
-
-        <TextView
-            android:id="@+id/tv_leave_time"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:minHeight="25dp"
-            android:text="Leave At : "
-            android:textColor="@color/colorWhite"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toStartOf="@id/tv_arrive_time"
-            app:layout_constraintStart_toStartOf="@id/tv_from"
-            app:layout_constraintTop_toBottomOf="@id/tv_from" />
-
-        <TextView
-            android:id="@+id/tv_train_class"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="25dp"
-            android:text="Class : "
-            android:textColor="@color/colorWhite"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/tv_arrive_time"
-            app:layout_constraintStart_toStartOf="@+id/tv_leave_time"
-            app:layout_constraintTop_toBottomOf="@+id/tv_leave_time" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.cardview.widget.CardView>

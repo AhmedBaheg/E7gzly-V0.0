@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,7 +9,9 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        tools:ignore="UselessParent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -21,13 +23,14 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="350dp"
-                android:src="@drawable/logochoose" />
+                android:src="@drawable/logochoose"
+                android:contentDescription="@string/todo" />
 
             <TextView
                 android:id="@+id/tv_welcome"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Welcome"
+                android:text="@string/welcome"
                 android:textColor="#fff"
                 android:textSize="30sp" />
 
@@ -35,7 +38,7 @@
                 android:id="@+id/tv_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="I wish you enjoy with E7gzly"
+                android:text="@string/save_time_effort_and_money_with_e7gzly"
                 android:textColor="#fff"
                 android:textSize="20sp" />
 
@@ -48,7 +51,7 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="30dp"
                 android:background="@drawable/white_border"
-                android:text="Sign Up"
+                android:text="@string/sign_up"
                 android:textColor="#fff"
                 android:textSize="20sp" />
 
@@ -56,10 +59,10 @@
                 android:id="@+id/line"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="1dp"
-                android:layout_marginEnd="1dp"
                 android:layout_marginBottom="30dp"
                 android:gravity="center"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toTopOf="@+id/btn_sign_up"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -78,7 +81,7 @@
                     android:layout_height="wrap_content"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
-                    android:text="OR"
+                    android:text="@string/or"
                     android:textColor="@color/colorWhite"
                     android:textSize="20sp" />
 
@@ -100,7 +103,7 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="30dp"
                 android:background="#fff"
-                android:text="Login"
+                android:text="@string/login"
                 android:textColor="#0099FE"
                 android:textSize="20sp" />
 
@@ -108,187 +111,5 @@
 
     </ScrollView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
 
-    <!--<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-    <!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
-    <!--    xmlns:tools="http://schemas.android.com/tools"-->
-    <!--    android:layout_width="match_parent"-->
-    <!--    android:layout_height="match_parent"-->
-    <!--    android:background="@drawable/choose"-->
-    <!--    tools:context=".MainActivity">-->
-
-    <!--    <ScrollView-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="match_parent"-->
-    <!--        android:scrollbarSize="0dp">-->
-
-    <!--        <androidx.constraintlayout.widget.ConstraintLayout-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="match_parent">-->
-
-
-    <!--            <ImageView-->
-    <!--                android:id="@+id/Img_logo_choose"-->
-    <!--                android:layout_width="match_parent"-->
-    <!--                android:layout_height="300dp"-->
-    <!--                android:src="@drawable/logo_choose"-->
-    <!--                app:layout_constraintEnd_toEndOf="parent"-->
-    <!--                app:layout_constraintHorizontal_bias="0.0"-->
-    <!--                app:layout_constraintStart_toStartOf="parent"-->
-    <!--                app:layout_constraintTop_toTopOf="parent" />-->
-
-    <!--            <TextView-->
-    <!--                android:id="@+id/tv_welcome"-->
-    <!--                android:layout_width="wrap_content"-->
-    <!--                android:layout_height="wrap_content"-->
-    <!--                android:text="Welcome"-->
-    <!--                android:textColor="#fff"-->
-    <!--                android:textSize="30sp"-->
-    <!--                app:layout_constraintEnd_toEndOf="@+id/Img_logo_choose"-->
-    <!--                app:layout_constraintStart_toStartOf="@id/Img_logo_choose"-->
-    <!--                app:layout_constraintTop_toBottomOf="@+id/Img_logo_choose" />-->
-
-    <!--            <TextView-->
-    <!--                android:id="@+id/tv_text"-->
-    <!--                android:layout_width="wrap_content"-->
-    <!--                android:layout_height="wrap_content"-->
-    <!--                android:text="I wish you enjoy with E7gzly"-->
-    <!--                android:textColor="#fff"-->
-    <!--                android:textSize="20sp"-->
-    <!--                app:layout_constraintEnd_toEndOf="@+id/tv_welcome"-->
-    <!--                app:layout_constraintStart_toStartOf="@+id/tv_welcome"-->
-    <!--                app:layout_constraintTop_toBottomOf="@+id/tv_welcome" />-->
-
-    <!--            <Button-->
-    <!--                android:id="@+id/btn_sign_up"-->
-    <!--                android:layout_width="match_parent"-->
-    <!--                android:layout_height="wrap_content"-->
-    <!--                android:layout_marginStart="10dp"-->
-    <!--                android:layout_marginTop="50dp"-->
-    <!--                android:layout_marginEnd="10dp"-->
-    <!--                android:background="@drawable/white_border"-->
-    <!--                android:text="Sign Up"-->
-    <!--                android:textColor="#fff"-->
-    <!--                android:textSize="20sp"-->
-    <!--                app:layout_constraintEnd_toEndOf="parent"-->
-    <!--                app:layout_constraintStart_toStartOf="parent"-->
-    <!--                app:layout_constraintTop_toBottomOf="@+id/tv_text" />-->
-
-    <!--            <TextView-->
-    <!--                android:id="@+id/tv_or"-->
-    <!--                android:layout_width="wrap_content"-->
-    <!--                android:layout_height="wrap_content"-->
-    <!--                android:layout_marginTop="30dp"-->
-    <!--                android:text="OR"-->
-    <!--                android:textColor="#fff"-->
-    <!--                android:textSize="20sp"-->
-    <!--                app:layout_constraintEnd_toEndOf="parent"-->
-    <!--                app:layout_constraintStart_toStartOf="parent"-->
-    <!--                app:layout_constraintTop_toBottomOf="@+id/btn_sign_up" />-->
-
-    <!--            <Button-->
-    <!--                android:id="@+id/btn_login"-->
-    <!--                android:layout_width="match_parent"-->
-    <!--                android:layout_height="wrap_content"-->
-    <!--                android:layout_marginStart="10dp"-->
-    <!--                android:layout_marginTop="30dp"-->
-    <!--                android:layout_marginEnd="10dp"-->
-    <!--                android:background="#fff"-->
-    <!--                android:text="Login"-->
-    <!--                android:textColor="#0099FE"-->
-    <!--                android:textSize="20sp"-->
-    <!--                app:layout_constraintEnd_toEndOf="parent"-->
-    <!--                app:layout_constraintStart_toStartOf="parent"-->
-    <!--                app:layout_constraintTop_toBottomOf="@+id/tv_or" />-->
-
-    <!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
-
-    <!--    </ScrollView>-->
-
-    <!--</androidx.constraintlayout.widget.ConstraintLayout>-->
-
-    <!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-    <!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
-    <!--    xmlns:tools="http://schemas.android.com/tools"-->
-    <!--    android:layout_width="match_parent"-->
-    <!--    android:layout_height="match_parent"-->
-    <!--    android:background="@drawable/choose"-->
-    <!--    android:orientation="vertical"-->
-    <!--    android:weightSum="2"-->
-    <!--    tools:context=".MainActivity">-->
-
-    <!--    <LinearLayout-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="390dp"-->
-    <!--        android:layout_weight="1">-->
-
-    <!--        <ImageView-->
-    <!--            android:layout_width="wrap_content"-->
-    <!--            android:layout_height="390dp"-->
-    <!--            android:src="@drawable/logo_choose" />-->
-
-    <!--    </LinearLayout>-->
-
-    <!--    <LinearLayout-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_weight="1"-->
-    <!--        android:orientation="vertical"-->
-    <!--        android:weightSum="3">-->
-
-    <!--        <LinearLayout-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:layout_weight="1"-->
-    <!--            android:orientation="vertical"-->
-    <!--            android:weightSum="2">-->
-
-    <!--            <TextView-->
-    <!--                android:layout_width="match_parent"-->
-    <!--                android:layout_height="wrap_content"-->
-    <!--                android:layout_weight="1"-->
-    <!--                android:gravity="center"-->
-    <!--                android:text="Welcome"-->
-    <!--                android:textColor="#fff"-->
-    <!--                android:textSize="30sp"-->
-    <!--                android:textStyle="bold" />-->
-
-    <!--            <TextView-->
-    <!--                android:layout_width="match_parent"-->
-    <!--                android:layout_height="wrap_content"-->
-    <!--                android:layout_marginBottom="50dp"-->
-    <!--                android:gravity="center"-->
-    <!--                android:text="I wish you enjoy with E7gzly"-->
-    <!--                android:textColor="#fff"-->
-    <!--                android:textSize="20sp" />-->
-
-    <!--        </LinearLayout>-->
-
-    <!--        <Button-->
-    <!--            android:id="@+id/btn_sign_up"-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:layout_marginStart="10dp"-->
-    <!--            android:layout_marginEnd="10dp"-->
-    <!--            android:layout_marginBottom="50dp"-->
-    <!--            android:background="@drawable/white_border"-->
-    <!--            android:text="Sign Up"-->
-    <!--            android:textColor="#fff" />-->
-
-    <!--        <Button-->
-    <!--            android:id="@+id/btn_login"-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:layout_marginStart="10dp"-->
-    <!--            android:layout_marginEnd="10dp"-->
-    <!--            android:layout_marginBottom="50dp"-->
-    <!--            android:background="#fff"-->
-    <!--            android:text="login"-->
-    <!--            android:textColor="#0099FE" />-->
-
-
-    <!--    </LinearLayout>-->
-
-
-    <!--</LinearLayout>-->

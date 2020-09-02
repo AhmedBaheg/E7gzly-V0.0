@@ -34,8 +34,10 @@
                 android:gravity="center"
                 android:padding="5dp"
                 android:text="From :"
-                android:textColor="@android:color/black"
-                android:textSize="18sp" />
+                android:textColor="@color/colorSkyBlueDark"
+                android:theme="@style/BlueCheck"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <Spinner
                 android:id="@+id/sp_from"
@@ -73,8 +75,9 @@
                 android:gravity="center"
                 android:padding="5dp"
                 android:text="To :"
-                android:textColor="@android:color/black"
-                android:textSize="18sp" />
+                android:textColor="@color/colorSkyBlueDark"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <Spinner
                 android:id="@+id/sp_to"
@@ -109,16 +112,19 @@
                 android:id="@+id/cb_class"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:buttonTint="@color/colorSkyBlueDark"
                 android:gravity="center"
                 android:text="Class :"
-                android:textSize="18sp" />
+                android:textColor="@color/colorSkyBlueDark"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <Spinner
                 android:id="@+id/sp_train_class"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:entries="@array/train_class"
-                android:layout_gravity="center" />
+                android:layout_gravity="center"
+                android:entries="@array/train_class" />
 
         </LinearLayout>
 
